@@ -1,0 +1,50 @@
+export type Category = string;
+export type Gender = string;
+export type Region = string;
+export type ViewMode = "table" | "card";
+
+export interface College {
+  id: string;
+  phase?: string;
+  collegeName: string;
+  collegeCode: string;
+  location: string;
+  distCode?: string;
+  branch: string;
+  branchCode: string;
+  category: Category;
+  gender: Gender;
+  region?: Region;
+  cutoffRank?: number;
+  cutoffRankStart?: number;
+  cutoffRankEnd?: number;
+  webOptionsAvailable: boolean;
+  type: string;
+  tuitionFee: number;
+  affiliatedTo?: string;
+}
+
+export interface CollegeFilters {
+  rank?: number;
+  category?: Category;
+  gender?: Gender;
+  region?: Region;
+  branch?: string;
+  search?: string;
+  page?: number;
+  pageSize?: number;
+}
+
+export interface CollegesApiResponse {
+  data: College[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  appliedFilters: CollegeFilters;
+}
+
+export interface ApiError {
+  error: string;
+  code: string;
+}

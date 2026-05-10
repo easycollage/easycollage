@@ -1,0 +1,6 @@
+{
+  "/api/colleges/route": "app/api/colleges/route.js",
+  "/page": "app/page.js",
+  "/rank-finder/page": "app/rank-finder/page.js",
+  "/admin/login/page": "app/admin/login/page.js"
+}
