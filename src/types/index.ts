@@ -30,7 +30,9 @@ export interface CollegeFilters {
   gender?: Gender;
   region?: Region;
   branch?: string;
+  branches?: string[];
   search?: string;
+  mode?: "eligible" | "web-options";
   page?: number;
   pageSize?: number;
 }

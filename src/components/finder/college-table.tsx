@@ -16,7 +16,7 @@ export function CollegeTable({ colleges, userRank }: CollegeTableProps) {
             <th className="text-left px-4 py-3 font-semibold text-gray-700 whitespace-nowrap">College</th>
             <th className="text-left px-4 py-3 font-semibold text-gray-700 whitespace-nowrap">Branch</th>
             <th className="text-left px-4 py-3 font-semibold text-gray-700 whitespace-nowrap">Category</th>
-            <th className="text-left px-4 py-3 font-semibold text-gray-700 whitespace-nowrap">Cutoff Range</th>
+            <th className="text-left px-4 py-3 font-semibold text-gray-700 whitespace-nowrap">Cutoff Rank</th>
             <th className="text-left px-4 py-3 font-semibold text-gray-700 whitespace-nowrap">Type</th>
             <th className="text-left px-4 py-3 font-semibold text-gray-700 whitespace-nowrap">Fee/yr</th>
             <th className="text-left px-4 py-3 font-semibold text-gray-700 whitespace-nowrap">Web</th>
@@ -26,6 +26,10 @@ export function CollegeTable({ colleges, userRank }: CollegeTableProps) {
           {colleges.map((college) => {
             const cutoffRankStart = getCutoffRankStart(college);
             const cutoffRankEnd = getCutoffRankEnd(college);
+            const cutoffLabel =
+              cutoffRankStart === cutoffRankEnd
+                ? formatRank(cutoffRankEnd)
+                : `${formatRank(cutoffRankStart)} – ${formatRank(cutoffRankEnd)}`;
 
             return (
             <tr
@@ -54,7 +58,7 @@ export function CollegeTable({ colleges, userRank }: CollegeTableProps) {
                 </div>
               </td>
               <td className="px-4 py-3 font-mono text-xs text-gray-700 whitespace-nowrap">
-                {formatRank(cutoffRankStart)} – {formatRank(cutoffRankEnd)}
+                {cutoffLabel}
               </td>
               <td className="px-4 py-3">
                 <span

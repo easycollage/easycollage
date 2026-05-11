@@ -5,7 +5,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatFee(fee: number): string {
+export function formatFee(fee?: number | null): string {
+  if (typeof fee !== "number" || !Number.isFinite(fee) || fee <= 0) {
+    return "Not available";
+  }
+
   if (fee >= 100000) {
     return `₹${(fee / 100000).toFixed(1)}L`;
   }

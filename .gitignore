@@ -6,3 +6,6 @@ tsconfig.tsbuildinfo
 .env*
 
 /src/generated/prisma
+
+# Local one-off scripts with credentials or private setup helpers
+local-scripts/

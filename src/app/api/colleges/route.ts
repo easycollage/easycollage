@@ -10,7 +10,10 @@ export async function GET(req: NextRequest): Promise<NextResponse<CollegesApiRes
   const gender = searchParams.get("gender") ?? "";
   const region = searchParams.get("region") ?? "";
   const branch = searchParams.get("branch") ?? "";
+  const branches = searchParams.get("branches") ?? "";
   const search = searchParams.get("search") ?? "";
+  const mode: "eligible" | "web-options" =
+    searchParams.get("mode") === "web-options" ? "web-options" : "eligible";
   const pageStr = searchParams.get("page") ?? "1";
   const pageSizeStr = searchParams.get("pageSize") ?? "12";
 
@@ -24,7 +27,8 @@ export async function GET(req: NextRequest): Promise<NextResponse<CollegesApiRes
   }
 
   const page = Math.max(1, parseInt(pageStr, 10) || 1);
-  const pageSize = Math.min(50, Math.max(1, parseInt(pageSizeStr, 10) || 12));
+  const maxPageSize = mode === "web-options" ? 500 : 50;
+  const pageSize = Math.min(maxPageSize, Math.max(1, parseInt(pageSizeStr, 10) || 12));
 
   const filters = {
     rank: rankValidation.rank,
@@ -32,7 +36,9 @@ export async function GET(req: NextRequest): Promise<NextResponse<CollegesApiRes
     gender: gender || undefined,
     region: region || undefined,
     branch: branch || undefined,
+    branches: branches ? branches.split(",").filter(Boolean) : undefined,
     search: search || undefined,
+    mode,
     page,
     pageSize,
   };

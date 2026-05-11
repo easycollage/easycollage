@@ -60,6 +60,52 @@ const STATS = [
   { value: "3", label: "Regions" },
 ];
 
+const COMPARISON = [
+  {
+    title: "Normal web options lists",
+    points: [
+      "Long lists with too many colleges to compare",
+      "Students may miss better choices for their rank",
+      "Cutoffs, branches, and categories are hard to read quickly",
+      "Planning order becomes confusing during counselling",
+    ],
+  },
+  {
+    title: "EasyCollege",
+    points: [
+      "Shows colleges based on your rank and category",
+      "Helps shortlist safer and better web options",
+      "Makes branch and college comparison easier",
+      "Built to reduce mistakes before final submission",
+    ],
+    highlighted: true,
+  },
+];
+
+const PEOPLE = [
+  {
+    name: "Panthangi Sandeep",
+    role: "Founder",
+    image: "/assets/Founder.jpeg",
+    featured: true,
+  },
+  {
+    name: "Bothapalli Naresh",
+    role: "Team Member",
+    image: "/assets/BothapalliNaresh.jpg",
+  },
+  {
+    name: "Nagireddy Abhiram",
+    role: "Team Member",
+    image: "/assets/Nagireddy-Abhiram.jpeg",
+  },
+  {
+    name: "Thalari Bhanu",
+    role: "Team Member",
+    image: "/assets/ThalariBhanu.jpeg",
+  },
+];
+
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
@@ -240,6 +286,112 @@ export default function HomePage() {
                 </div>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      {/* Comparison */}
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-100 text-green-700 text-xs font-semibold mb-4">
+              Why It Matters
+            </div>
+            <h2 className="font-display font-bold text-3xl sm:text-4xl text-gray-900 mb-4">
+              Comparing ours with others
+            </h2>
+            <p className="text-gray-500 text-lg max-w-2xl mx-auto">
+              Web options decide the final college allotment. A small mistake in
+              choice order, branch selection, or cutoff understanding can change
+              the result, so EasyCollege keeps the process clearer.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {COMPARISON.map((item) => (
+              <div
+                key={item.title}
+                className={`rounded-xl border p-6 ${
+                  item.highlighted
+                    ? "border-green-200 bg-green-50"
+                    : "border-gray-100 bg-gray-50"
+                }`}
+              >
+                <h3 className="font-display font-semibold text-xl text-gray-900 mb-5">
+                  {item.title}
+                </h3>
+                <ul className="space-y-3">
+                  {item.points.map((point) => (
+                    <li key={point} className="flex gap-3 text-sm text-gray-600">
+                      <CheckCircle2
+                        className={`mt-0.5 h-4 w-4 shrink-0 ${
+                          item.highlighted ? "text-green-600" : "text-gray-400"
+                        }`}
+                      />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* People */}
+      <section className="py-20 bg-gray-50/50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-12">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-100 text-green-700 text-xs font-semibold mb-4">
+                Our Team
+              </div>
+              <h2 className="font-display font-bold text-3xl sm:text-4xl text-gray-900 mb-3">
+                People behind EasyCollage
+              </h2>
+              <p className="text-gray-500 text-lg max-w-xl">
+                Meet the people shaping a simpler, clearer college search
+                experience for students.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
+            {PEOPLE.map((person) => (
+              <div
+                key={person.name}
+                className={`group overflow-hidden rounded-xl border border-gray-100 bg-gray-50 ${
+                  person.featured
+                    ? "lg:col-span-2 lg:row-span-2"
+                    : "lg:col-span-1"
+                }`}
+              >
+                <div
+                  className={`relative overflow-hidden ${
+                    person.featured
+                      ? "aspect-[4/5] sm:aspect-[16/10] lg:aspect-[4/5]"
+                      : "aspect-[4/3] lg:aspect-[3/4]"
+                  }`}
+                >
+                  <img
+                    src={person.image}
+                    alt={`${person.name}, ${person.role}`}
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-gray-950/80 via-gray-950/30 to-transparent p-5">
+                    <h3
+                      className={`font-display font-semibold text-white ${
+                        person.featured ? "text-2xl" : "text-lg"
+                      }`}
+                    >
+                      {person.name}
+                    </h3>
+                    <p className="text-sm text-green-100">{person.role}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

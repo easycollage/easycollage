@@ -55,7 +55,18 @@ export function Footer() {
         </div>
 
         <div className="mt-10 pt-6 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p className="text-xs text-gray-400">© {new Date().getFullYear()} EasyCollege. Built for Telangana students.</p>
+          <p className="text-xs text-gray-400">
+            © {new Date().getFullYear()} EasyCollege. Built by{" "}
+            <a
+              href="https://loynix.in"
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium text-gray-500 hover:text-green-600 transition-colors"
+            >
+              Loynix Studio - loynix.com
+            </a>
+            .
+          </p>
           <p className="text-xs text-gray-400">Data is for guidance only. Verify with TSCHE.</p>
         </div>
       </div>

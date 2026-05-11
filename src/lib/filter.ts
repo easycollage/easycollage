@@ -12,7 +12,9 @@ export function filterColleges(filters: CollegeFilters): {
     gender,
     region,
     branch,
+    branches = [],
     search,
+    mode = "eligible",
     page = 1,
     pageSize = 12,
   } = filters;
@@ -26,6 +28,19 @@ export function filterColleges(filters: CollegeFilters): {
       results = results.filter((c) => {
         const start = getCutoffRankStart(c);
         const end = getCutoffRankEnd(c);
+
+        if (mode === "web-options") {
+          const cutoff = end ?? start;
+          const lowerBound = Math.max(1, Math.floor(parsedRank * 0.975));
+          const upperBound = Math.ceil(parsedRank * 1.25);
+
+          return (
+            c.webOptionsAvailable &&
+            typeof cutoff === "number" &&
+            cutoff >= lowerBound &&
+            cutoff <= upperBound
+          );
+        }
 
         if (typeof c.cutoffRank === "number") {
           return parsedRank <= c.cutoffRank;
@@ -67,6 +82,17 @@ export function filterColleges(filters: CollegeFilters): {
       (c) =>
         c.branch.toLowerCase().includes(normalizedBranch) ||
         c.branchCode.toLowerCase().includes(normalizedBranch)
+    );
+  }
+
+  if (branches.length > 0) {
+    const normalizedBranches = branches.map((b) => b.toLowerCase());
+    results = results.filter((c) =>
+      normalizedBranches.some(
+        (b) =>
+          c.branchCode.toLowerCase() === b ||
+          c.branch.toLowerCase().includes(b)
+      )
     );
   }
 

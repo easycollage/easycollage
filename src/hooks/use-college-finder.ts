@@ -20,31 +20,38 @@ interface UseCollegefinderReturn {
 }
 
 export interface FilterState {
+  mode: "eligible" | "web-options";
   rank: string;
   category: string;
   gender: string;
   region: string;
   branch: string;
+  branches: string;
   search: string;
 }
 
 const DEFAULT_FILTERS: FilterState = {
+  mode: "eligible",
   rank: "",
   category: "",
   gender: "",
   region: "",
   branch: "",
+  branches: "",
   search: "",
 };
 
 function buildQueryString(filters: FilterState, page: number): string {
   const params = new URLSearchParams();
+  if (filters.mode !== "eligible") params.set("mode", filters.mode);
   if (filters.rank) params.set("rank", filters.rank);
   if (filters.category) params.set("category", filters.category);
   if (filters.gender) params.set("gender", filters.gender);
   if (filters.region) params.set("region", filters.region);
   if (filters.branch) params.set("branch", filters.branch);
+  if (filters.branches) params.set("branches", filters.branches);
   if (filters.search) params.set("search", filters.search);
+  if (filters.mode === "web-options") params.set("pageSize", "100");
   if (page > 1) params.set("page", String(page));
   return params.toString();
 }
@@ -56,11 +63,13 @@ export function useCollegeFinder(): UseCollegefinderReturn {
 
   // Init from URL params
   const [filters, setFilters] = useState<FilterState>({
+    mode: searchParams.get("mode") === "web-options" ? "web-options" : "eligible",
     rank: searchParams.get("rank") ?? "",
     category: searchParams.get("category") ?? "",
     gender: searchParams.get("gender") ?? "",
     region: searchParams.get("region") ?? "",
     branch: searchParams.get("branch") ?? "",
+    branches: searchParams.get("branches") ?? "",
     search: searchParams.get("search") ?? "",
   });
   const [page, setPageState] = useState(parseInt(searchParams.get("page") ?? "1", 10));
