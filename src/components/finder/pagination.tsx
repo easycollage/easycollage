@@ -27,13 +27,14 @@ export function Pagination({ page, totalPages, onPageChange }: PaginationProps) 
   }
 
   return (
-    <div className="flex items-center justify-center gap-1 mt-8">
+    <div className="flex flex-wrap items-center justify-center gap-1 mt-8">
       <button
         onClick={() => onPageChange(page - 1)}
         disabled={page === 1}
-        className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-gray-200 px-3 text-sm font-medium text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
       >
         <ChevronLeft className="w-4 h-4" />
+        Previous
       </button>
 
       {pages.map((p, i) =>
@@ -60,8 +61,9 @@ export function Pagination({ page, totalPages, onPageChange }: PaginationProps) 
       <button
         onClick={() => onPageChange(page + 1)}
         disabled={page === totalPages}
-        className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-gray-200 px-3 text-sm font-medium text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
       >
+        Next
         <ChevronRight className="w-4 h-4" />
       </button>
     </div>

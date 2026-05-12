@@ -18,6 +18,8 @@ interface LeadGateProps {
 
 const INPUT_CLS =
   "w-full pl-10 pr-4 py-3 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent placeholder:text-gray-400 transition-shadow";
+const NAME_PATTERN = /^[A-Za-z]+(?:\s+[A-Za-z]+)*$/;
+const MAX_NAME_LENGTH = 70;
 
 export function LeadGate({ onUnlock }: LeadGateProps) {
   const [form, setForm] = useState<LeadFormData>({ name: "", phone: "", rank: "", category: "", gender: "" });
@@ -28,8 +30,13 @@ export function LeadGate({ onUnlock }: LeadGateProps) {
   function validate(): boolean {
     const e: Partial<LeadFormData> = {};
 
-    if (!form.name.trim() || form.name.trim().length < 2) {
+    const name = form.name.trim();
+    if (!name || name.length < 2) {
       e.name = "Enter your full name";
+    } else if (name.length > MAX_NAME_LENGTH) {
+      e.name = "Full name must be 70 characters or less";
+    } else if (!NAME_PATTERN.test(name)) {
+      e.name = "Full name can contain only letters and spaces";
     }
 
     const phone = form.phone.replace(/\s/g, "");
@@ -120,6 +127,7 @@ export function LeadGate({ onUnlock }: LeadGateProps) {
                   type="text"
                   placeholder="e.g. Ravi Kumar"
                   value={form.name}
+                  maxLength={MAX_NAME_LENGTH}
                   onChange={(e) => {
                     setForm((f) => ({ ...f, name: e.target.value }));
                     if (errors.name) setErrors((er) => ({ ...er, name: "" }));

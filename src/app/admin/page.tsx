@@ -40,6 +40,8 @@ export default function AdminDashboard() {
   }
 
   async function handleLogout() {
+    if (!window.confirm("Are you sure you want to logout?")) return;
+
     await fetch("/api/auth/logout", { method: "POST" });
     router.push("/admin/login" as Route);
     router.refresh();
@@ -69,7 +71,10 @@ export default function AdminDashboard() {
   }
 
   async function deleteLead(leadId: string) {
-    if (!window.confirm("Delete this lead?")) return;
+    const leadToDelete = leads.find((lead) => lead.id === leadId);
+    const leadName = leadToDelete?.name ? ` "${leadToDelete.name}"` : "";
+
+    if (!window.confirm(`Are you sure you want to delete${leadName}?`)) return;
 
     const previousLeads = leads;
     setSavingLeadId(leadId);

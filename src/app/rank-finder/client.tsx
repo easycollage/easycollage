@@ -315,13 +315,11 @@ export function RankFinderClient() {
               />
             )}
 
-            {!isWebOptionsMode && (
-              <Pagination
-                page={page}
-                totalPages={totalPages}
-                onPageChange={setPage}
-              />
-            )}
+            <Pagination
+              page={page}
+              totalPages={totalPages}
+              onPageChange={setPage}
+            />
           </div>
         </div>
       </div>

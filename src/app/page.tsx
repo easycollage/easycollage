@@ -104,6 +104,11 @@ const PEOPLE = [
     role: "Team Member",
     image: "/assets/ThalariBhanu.jpeg",
   },
+  {
+    name: "Chimmula Manojkumar",
+    role: "Team Member",
+    image: "/assets/Chimmula-Manojkumar.jpeg",
+  },
 ];
 
 export default function HomePage() {

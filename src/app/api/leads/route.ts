@@ -11,6 +11,9 @@ interface LeadPayload {
   gender?: string;
 }
 
+const NAME_PATTERN = /^[A-Za-z]+(?:\s+[A-Za-z]+)*$/;
+const MAX_NAME_LENGTH = 70;
+
 function validateLead(body: unknown): { valid: boolean; error?: string; data?: LeadPayload } {
   if (typeof body !== "object" || body === null) {
     return { valid: false, error: "Invalid request body" };
@@ -18,8 +21,21 @@ function validateLead(body: unknown): { valid: boolean; error?: string; data?: L
 
   const b = body as Record<string, unknown>;
 
-  if (typeof b.name !== "string" || b.name.trim().length < 2) {
+  if (typeof b.name !== "string") {
+    return { valid: false, error: "Name is required" };
+  }
+
+  const name = b.name.trim();
+  if (name.length < 2) {
     return { valid: false, error: "Name must be at least 2 characters" };
+  }
+
+  if (name.length > MAX_NAME_LENGTH) {
+    return { valid: false, error: "Name must be 70 characters or less" };
+  }
+
+  if (!NAME_PATTERN.test(name)) {
+    return { valid: false, error: "Name can contain only letters and spaces" };
   }
 
   if (typeof b.phone !== "string" || !/^[6-9]\d{9}$/.test(b.phone)) {
@@ -33,7 +49,7 @@ function validateLead(body: unknown): { valid: boolean; error?: string; data?: L
 
   return {
     valid: true,
-    data: { name: b.name.trim(), phone: b.phone, rank, category: b.category as string, gender: b.gender as string },
+    data: { name, phone: b.phone, rank, category: b.category as string, gender: b.gender as string },
   };
 }
 
