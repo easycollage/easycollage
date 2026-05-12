@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import prisma from "@/lib/prisma";
+import { verifySession } from "@/lib/session";
 
 interface LeadPayload {
   name: string;
@@ -35,6 +37,14 @@ function validateLead(body: unknown): { valid: boolean; error?: string; data?: L
   };
 }
 
+async function requireAdmin() {
+  const sessionCookie = cookies().get("admin_session");
+  if (!sessionCookie?.value) return false;
+
+  const payload = await verifySession(sessionCookie.value);
+  return Boolean(payload);
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -63,13 +73,72 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// Optional: GET endpoint to view leads (protect this in production with auth)
 export async function GET() {
-  const leads = await prisma.lead.findMany({
-    orderBy: { createdAt: "desc" },
+  if (!(await requireAdmin())) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const leads = await (prisma.lead as any).findMany({
+    orderBy: [{ isRead: "asc" }, { createdAt: "desc" }],
   });
   return NextResponse.json({
     total: leads.length,
     leads,
   });
+}
+
+export async function PATCH(req: NextRequest) {
+  if (!(await requireAdmin())) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  try {
+    const body = await req.json();
+
+    if (
+      typeof body !== "object" ||
+      body === null ||
+      typeof body.id !== "string" ||
+      typeof body.isRead !== "boolean"
+    ) {
+      return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+    }
+
+    const lead = await (prisma.lead as any).update({
+      where: { id: body.id },
+      data: { isRead: body.isRead },
+    });
+
+    return NextResponse.json({ success: true, lead });
+  } catch (error) {
+    console.error("Failed to update lead:", error);
+    return NextResponse.json({ error: "Failed to update lead" }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  if (!(await requireAdmin())) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  try {
+    const body = await req.json();
+
+    if (
+      typeof body !== "object" ||
+      body === null ||
+      typeof body.id !== "string"
+    ) {
+      return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+    }
+
+    await prisma.lead.delete({
+      where: { id: body.id },
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Failed to delete lead:", error);
+    return NextResponse.json({ error: "Failed to delete lead" }, { status: 500 });
+  }
 }

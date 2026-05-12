@@ -25,5 +25,6 @@ model Lead {
   rank      Int
   category  String?
   gender    String?
+  isRead    Boolean? @default(false)
   createdAt DateTime @default(now())
 }
