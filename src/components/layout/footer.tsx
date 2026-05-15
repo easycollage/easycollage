@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { GraduationCap, MapPin } from "lucide-react";
+import { GraduationCap, Mail, MapPin } from "lucide-react";
 
 export function Footer() {
   return (
@@ -21,6 +21,13 @@ export function Footer() {
               <MapPin className="w-3.5 h-3.5 text-green-600" />
               <span>Telangana, India</span>
             </div>
+            <a
+              href="mailto:support@easycollage.in"
+              className="mt-2 flex items-center gap-1.5 text-sm text-gray-500 transition-colors hover:text-green-600"
+            >
+              <Mail className="w-3.5 h-3.5 text-green-600" />
+              <span>support@easycollage.in</span>
+            </a>
           </div>
 
           {/* Quick Links */}
