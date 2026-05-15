@@ -62,11 +62,6 @@ export function CollegeCard({ college, userRank }: CollegeCardProps) {
         <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
           {college.gender}
         </span>
-        {college.region && (
-          <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
-            {college.region} Zone
-          </span>
-        )}
         {isWebOption && (
           <span className="text-xs bg-green-50 text-green-700 px-2 py-0.5 rounded-full flex items-center gap-1">
             <Globe className="w-2.5 h-2.5" />

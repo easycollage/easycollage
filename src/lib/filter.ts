@@ -2,6 +2,14 @@ import type { College, CollegeFilters } from "@/types";
 import { getCutoffRankEnd, getCutoffRankStart } from "@/lib/utils";
 import { MOCK_COLLEGES } from "./mockdata";
 
+function matchesCategory(collegeCategory: string, selectedCategory: string): boolean {
+  if (selectedCategory === "SC") {
+    return collegeCategory === "SC" || collegeCategory.startsWith("SC_");
+  }
+
+  return collegeCategory === selectedCategory;
+}
+
 export function filterColleges(filters: CollegeFilters): {
   data: College[];
   total: number;
@@ -10,7 +18,6 @@ export function filterColleges(filters: CollegeFilters): {
     rank,
     category,
     gender,
-    region,
     branch,
     branches = [],
     search,
@@ -58,20 +65,13 @@ export function filterColleges(filters: CollegeFilters): {
 
   // Category filter
   if (category && category !== "") {
-    results = results.filter((c) => c.category === category);
+    results = results.filter((c) => matchesCategory(c.category, category));
   }
 
   // Gender filter — "Both" entries are always included unless filtering for specific gender
   if (gender && gender !== "") {
     results = results.filter(
       (c) => c.gender === gender || c.gender === "Both"
-    );
-  }
-
-  // Region filter — "Open" entries are always available to everyone
-  if (region && region !== "") {
-    results = results.filter(
-      (c) => c.region === region || c.region === "Open"
     );
   }
 

@@ -7,7 +7,7 @@ import { RankFinderClient } from "./client";
 export const metadata: Metadata = {
   title: "College Finder",
   description:
-    "Search and filter Telangana engineering colleges by your EAMCET rank, category, gender, region and branch.",
+    "Search and filter Telangana engineering colleges by your EAMCET rank, category, gender and branch.",
 };
 
 export default function RankFinderPage() {

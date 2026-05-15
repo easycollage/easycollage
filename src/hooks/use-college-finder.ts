@@ -24,7 +24,6 @@ export interface FilterState {
   rank: string;
   category: string;
   gender: string;
-  region: string;
   branch: string;
   branches: string;
   search: string;
@@ -35,7 +34,6 @@ const DEFAULT_FILTERS: FilterState = {
   rank: "",
   category: "",
   gender: "",
-  region: "",
   branch: "",
   branches: "",
   search: "",
@@ -47,7 +45,6 @@ function buildQueryString(filters: FilterState, page: number): string {
   if (filters.rank) params.set("rank", filters.rank);
   if (filters.category) params.set("category", filters.category);
   if (filters.gender) params.set("gender", filters.gender);
-  if (filters.region) params.set("region", filters.region);
   if (filters.branch) params.set("branch", filters.branch);
   if (filters.branches) params.set("branches", filters.branches);
   if (filters.search) params.set("search", filters.search);
@@ -67,7 +64,6 @@ export function useCollegeFinder(): UseCollegefinderReturn {
     rank: searchParams.get("rank") ?? "",
     category: searchParams.get("category") ?? "",
     gender: searchParams.get("gender") ?? "",
-    region: searchParams.get("region") ?? "",
     branch: searchParams.get("branch") ?? "",
     branches: searchParams.get("branches") ?? "",
     search: searchParams.get("search") ?? "",

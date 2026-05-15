@@ -9,6 +9,7 @@ interface LeadPayload {
   rank: number;
   category?: string;
   gender?: string;
+  course?: string;
 }
 
 const NAME_PATTERN = /^[A-Za-z]+(?:\s+[A-Za-z]+)*$/;
@@ -49,7 +50,14 @@ function validateLead(body: unknown): { valid: boolean; error?: string; data?: L
 
   return {
     valid: true,
-    data: { name, phone: b.phone, rank, category: b.category as string, gender: b.gender as string },
+    data: {
+      name,
+      phone: b.phone,
+      rank,
+      category: typeof b.category === "string" ? b.category : undefined,
+      gender: typeof b.gender === "string" ? b.gender : undefined,
+      course: typeof b.course === "string" ? b.course : undefined,
+    },
   };
 }
 
@@ -70,13 +78,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: validation.error }, { status: 400 });
     }
 
-    const lead = await prisma.lead.create({
+    const lead = await (prisma.lead as any).create({
       data: {
         name: validation.data.name,
         phone: validation.data.phone,
         rank: validation.data.rank,
         category: validation.data.category,
         gender: validation.data.gender,
+        course: validation.data.course,
       },
     });
 

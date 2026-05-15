@@ -28,7 +28,6 @@ export interface CollegeFilters {
   rank?: number;
   category?: Category;
   gender?: Gender;
-  region?: Region;
   branch?: string;
   branches?: string[];
   search?: string;

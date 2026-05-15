@@ -54,7 +54,7 @@ export function CollegeTable({ colleges, userRank }: CollegeTableProps) {
                   <span className="inline-block text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full w-fit">
                     {getCategoryLabel(college.category)}
                   </span>
-                  <span className="text-xs text-gray-500">{college.gender} · {college.region}</span>
+                  <span className="text-xs text-gray-500">{college.gender}</span>
                 </div>
               </td>
               <td className="px-4 py-3 font-mono text-xs text-gray-700 whitespace-nowrap">

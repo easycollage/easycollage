@@ -8,7 +8,6 @@ export async function GET(req: NextRequest): Promise<NextResponse<CollegesApiRes
   const rankStr = searchParams.get("rank");
   const category = searchParams.get("category") ?? "";
   const gender = searchParams.get("gender") ?? "";
-  const region = searchParams.get("region") ?? "";
   const branch = searchParams.get("branch") ?? "";
   const branches = searchParams.get("branches") ?? "";
   const search = searchParams.get("search") ?? "";
@@ -34,7 +33,6 @@ export async function GET(req: NextRequest): Promise<NextResponse<CollegesApiRes
     rank: rankValidation.rank,
     category: category || undefined,
     gender: gender || undefined,
-    region: region || undefined,
     branch: branch || undefined,
     branches: branches ? branches.split(",").filter(Boolean) : undefined,
     search: search || undefined,

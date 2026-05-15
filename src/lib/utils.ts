@@ -47,6 +47,9 @@ export function getCategoryLabel(category: string): string {
     BC_D: "BC-D",
     BC_E: "BC-E",
     SC: "SC",
+    SC_I: "SC-I",
+    SC_II: "SC-II",
+    SC_III: "SC-III",
     ST: "ST",
   };
   return map[category] ?? category;

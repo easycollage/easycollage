@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { GraduationCap, Phone, User, Hash, ArrowRight, Loader2, CheckCircle2 } from "lucide-react";
-import { CATEGORIES, GENDERS } from "@/lib/mock-data";
+import { BRANCHES, CATEGORIES, GENDERS } from "@/lib/mock-data";
 
 interface LeadFormData {
   name: string;
@@ -10,6 +10,7 @@ interface LeadFormData {
   rank: string;
   category: string;
   gender: string;
+  course: string;
 }
 
 interface LeadGateProps {
@@ -22,7 +23,14 @@ const NAME_PATTERN = /^[A-Za-z]+(?:\s+[A-Za-z]+)*$/;
 const MAX_NAME_LENGTH = 70;
 
 export function LeadGate({ onUnlock }: LeadGateProps) {
-  const [form, setForm] = useState<LeadFormData>({ name: "", phone: "", rank: "", category: "", gender: "" });
+  const [form, setForm] = useState<LeadFormData>({
+    name: "",
+    phone: "",
+    rank: "",
+    category: "",
+    gender: "",
+    course: "",
+  });
   const [errors, setErrors] = useState<Partial<LeadFormData>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -57,6 +65,10 @@ export function LeadGate({ onUnlock }: LeadGateProps) {
       e.gender = "Select your gender";
     }
 
+    if (!form.course) {
+      e.course = "Select your course";
+    }
+
     setErrors(e);
     return Object.keys(e).length === 0;
   }
@@ -77,6 +89,7 @@ export function LeadGate({ onUnlock }: LeadGateProps) {
           rank: parseInt(form.rank, 10),
           category: form.category,
           gender: form.gender,
+          course: form.course,
         }),
       });
 
@@ -97,7 +110,7 @@ export function LeadGate({ onUnlock }: LeadGateProps) {
     <div className="fixed inset-0 z-50 bg-gradient-to-br from-green-50 via-white to-emerald-50/60 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Card */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden max-h-[calc(100vh-2rem)] overflow-y-auto">
           {/* Top strip */}
           <div className="bg-green-600 px-6 py-5 text-white">
             <div className="flex items-center gap-2.5 mb-2">
@@ -183,6 +196,27 @@ export function LeadGate({ onUnlock }: LeadGateProps) {
                 />
               </div>
               {errors.rank && <p className="text-xs text-red-500 mt-1">{errors.rank}</p>}
+            </div>
+
+            {/* Course */}
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                Course <span className="text-red-500">*</span>
+              </label>
+              <select
+                value={form.course}
+                onChange={(e) => {
+                  setForm((f) => ({ ...f, course: e.target.value }));
+                  if (errors.course) setErrors((er) => ({ ...er, course: "" }));
+                }}
+                className={INPUT_CLS + " [appearance:none]"}
+              >
+                <option value="" disabled>Select course</option>
+                {BRANCHES.map((branch) => (
+                  <option key={branch} value={branch}>{branch}</option>
+                ))}
+              </select>
+              {errors.course && <p className="text-xs text-red-500 mt-1">{errors.course}</p>}
             </div>
 
             {/* Category and Gender Row */}

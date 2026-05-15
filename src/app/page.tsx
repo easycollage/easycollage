@@ -11,9 +11,22 @@ import {
   GraduationCap,
   Search,
   CheckCircle2,
+  CalendarDays,
+  MessageCircle,
 } from "lucide-react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+
+const COUNSELLING_YEAR = new Date().getFullYear();
+const HERO_BADGE_LABEL = `TS EAMCET ${COUNSELLING_YEAR} Counselling Tool`;
+const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
+const COUNSELLING_MESSAGE = encodeURIComponent(
+  "Hi EasyCollege, I am confused about TS EAMCET web options. Please guide me."
+);
+const COUNSELLING_WHATSAPP_URL = WHATSAPP_NUMBER
+  ? `https://wa.me/${WHATSAPP_NUMBER}?text=${COUNSELLING_MESSAGE}`
+  : `https://wa.me/?text=${COUNSELLING_MESSAGE}`;
+
 const FEATURES = [
   {
     icon: Zap,
@@ -57,7 +70,7 @@ const STATS = [
   { value: "300+", label: "Colleges" },
   { value: "10+", label: "Branches" },
   { value: "8", label: "Categories" },
-  { value: "3", label: "Regions" },
+  { value: "1-click", label: "Results" },
 ];
 
 const COMPARISON = [
@@ -104,10 +117,11 @@ const PEOPLE = [
     role: "Team Member",
     image: "/assets/ThalariBhanu.jpeg",
   },
-  {
+    {
     name: "Chimmula Manojkumar",
     role: "Team Member",
-    image: "/assets/Chimmula-Manojkumar.jpeg",
+
+    image: "/assets/ChimmulaManojkumar.jpeg", 
   },
 ];
 
@@ -128,7 +142,7 @@ export default function HomePage() {
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-100 text-green-700 text-xs font-semibold mb-6 animate-fade-up">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                TS EAMCET 2024 Counselling Tool
+                {HERO_BADGE_LABEL}
               </div>
 
               <h1 className="font-display font-bold text-4xl sm:text-5xl text-gray-900 leading-[1.1] tracking-tight mb-5 animate-fade-up delay-100">
@@ -397,6 +411,46 @@ export default function HomePage() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Counselling Help */}
+      <section className="py-16 bg-green-50/60">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="rounded-2xl border border-green-100 bg-white px-6 py-7 sm:px-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-100 text-green-700 text-xs font-semibold mb-3">
+                Personal Guidance
+              </div>
+              <h2 className="font-display font-bold text-2xl sm:text-3xl text-gray-900 mb-2">
+                Confused about web options?
+              </h2>
+              <p className="text-sm text-gray-600 leading-relaxed max-w-xl">
+                Book a quick counselling call with us or message us on WhatsApp for guidance before final submission.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                type="button"
+                data-cal-link="easy-collage/10min"
+                data-cal-namespace="10min"
+                data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-gray-900 px-5 py-3 text-sm font-semibold text-white hover:bg-gray-800 transition-colors"
+              >
+                <CalendarDays className="w-4 h-4" />
+                Book a Meet
+              </button>
+              <a
+                href={COUNSELLING_WHATSAPP_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-600 px-5 py-3 text-sm font-semibold text-white hover:bg-green-700 transition-colors"
+              >
+                <MessageCircle className="w-4 h-4" />
+                WhatsApp Us
+              </a>
+            </div>
           </div>
         </div>
       </section>

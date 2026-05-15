@@ -1,7 +1,7 @@
 "use client";
 
 import { Search, X, SlidersHorizontal } from "lucide-react";
-import { BRANCHES, CATEGORIES, GENDERS, REGIONS } from "@/lib/mock-data";
+import { BRANCHES, CATEGORIES, GENDERS } from "@/lib/mock-data";
 import type { FilterState } from "@/hooks/use-college-finder";
 
 interface FiltersProps {
@@ -162,21 +162,6 @@ export function FiltersPanel({ filters, onUpdate, onReset, total, isLoading }: F
           <option value="">All</option>
           {GENDERS.map((g) => (
             <option key={g} value={g}>{g}</option>
-          ))}
-        </select>
-      </div>
-
-      {/* Region */}
-      <div>
-        <label className="block text-xs font-medium text-gray-600 mb-1.5">Region / Zone</label>
-        <select
-          value={filters.region}
-          onChange={(e) => onUpdate("region", e.target.value)}
-          className={SELECT_CLS}
-        >
-          <option value="">All Regions</option>
-          {REGIONS.map((r) => (
-            <option key={r} value={r}>{r} Zone</option>
           ))}
         </select>
       </div>

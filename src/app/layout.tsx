@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     template: "%s | EasyCollege",
   },
   description:
-    "Discover eligible engineering colleges in Telangana based on your EAMCET rank. Filter by category, branch, gender, region and get accurate cutoff insights instantly.",
+    "Discover eligible engineering colleges in Telangana based on your EAMCET rank. Filter by category, branch, gender and get accurate cutoff insights instantly.",
   keywords: [
     "EAMCET rank",
     "Telangana engineering colleges",

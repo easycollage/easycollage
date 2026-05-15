@@ -12,6 +12,7 @@ interface Lead {
   rank: number;
   category: string | null;
   gender: string | null;
+  course: string | null;
   isRead?: boolean | null;
   createdAt: string;
 }
@@ -131,6 +132,7 @@ export default function AdminDashboard() {
                 <th className="px-4 py-3 font-semibold">Rank</th>
                 <th className="px-4 py-3 font-semibold">Category</th>
                 <th className="px-4 py-3 font-semibold">Gender</th>
+                <th className="px-4 py-3 font-semibold">Course</th>
                 <th className="px-4 py-3 font-semibold">Date</th>
                 <th className="px-4 py-3 font-semibold rounded-tr-lg">Actions</th>
               </tr>
@@ -156,6 +158,7 @@ export default function AdminDashboard() {
                   <td className="px-4 py-3">{lead.rank.toLocaleString("en-IN")}</td>
                   <td className="px-4 py-3">{lead.category || "-"}</td>
                   <td className="px-4 py-3">{lead.gender || "-"}</td>
+                  <td className="px-4 py-3">{lead.course || "-"}</td>
                   <td className="px-4 py-3 text-gray-500">
                     {new Date(lead.createdAt).toLocaleDateString("en-IN", {
                       day: "2-digit",
