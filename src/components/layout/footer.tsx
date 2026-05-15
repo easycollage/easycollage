@@ -29,8 +29,8 @@ export function Footer() {
             <ul className="space-y-2.5">
               {([
                 { label: "Home", href: "/" },
-                { label: "Features", href: "/#features" },
-                { label: "College Finder", href: "/rank-finder" },
+                { label: "College Prediction", href: "/rank-finder" },
+                { label: "Web Options", href: "/rank-finder?mode=web-options" },
               ] as const).map((link) => (
                 <li key={link.href}>
                   <Link
@@ -51,6 +51,20 @@ export function Footer() {
               EasyCollege is a student tool for exploring TS EAMCET cutoffs and web options. 
               Data is indicative — always verify with the official TSCHE website before making decisions.
             </p>
+            <div className="mt-5 flex flex-col gap-2 sm:flex-row md:flex-col lg:flex-row">
+              <Link
+                href="/rank-finder"
+                className="inline-flex items-center justify-center rounded-lg bg-green-600 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-green-700"
+              >
+                College Prediction
+              </Link>
+              <Link
+                href="/rank-finder?mode=web-options"
+                className="inline-flex items-center justify-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-xs font-semibold text-gray-700 transition-colors hover:bg-gray-50"
+              >
+                Web Options
+              </Link>
+            </div>
           </div>
         </div>
 

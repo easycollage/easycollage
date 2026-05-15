@@ -7,8 +7,8 @@ import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
-  { label: "Features", href: "/#features" },
-  { label: "College Finder", href: "/rank-finder" },
+  { label: "College Prediction", href: "/rank-finder" },
+  { label: "Web Options", href: "/rank-finder?mode=web-options" },
 ] as const;
 
 export function Navbar() {
@@ -60,7 +60,7 @@ export function Navbar() {
             href="/rank-finder"
             className="px-4 py-2 text-sm font-semibold bg-green-600 text-white rounded-lg hover:bg-green-700 active:bg-green-800 transition-colors"
           >
-            Find Colleges
+            College Prediction
           </Link>
         </div>
 
@@ -92,7 +92,7 @@ export function Navbar() {
             className="mt-2 py-2.5 text-sm font-semibold bg-green-600 text-white rounded-lg text-center hover:bg-green-700 transition-colors"
             onClick={() => setMenuOpen(false)}
           >
-            Find Colleges
+            College Prediction
           </Link>
         </div>
       )}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { DM_Sans, Bricolage_Grotesque } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { FloatingWhatsApp } from "@/components/layout/floating-whatsapp";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -52,6 +53,7 @@ export default function RootLayout({
     <html lang="en" className={`${dmSans.variable} ${bricolage.variable}`}>
       <body className="min-h-screen bg-white font-sans text-gray-900 antialiased">
         {children}
+        <FloatingWhatsApp />
         <Analytics />
         <Script id="cal-com-embed" strategy="afterInteractive">
           {`
