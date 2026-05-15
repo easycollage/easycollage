@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Download, LayoutGrid, Table2, ListFilter } from "lucide-react";
 import { useCollegeFinder } from "@/hooks/use-college-finder";
 import { FiltersPanel } from "@/components/finder/filters-panel";
@@ -10,6 +10,7 @@ import { Pagination } from "@/components/finder/pagination";
 import { EmptyState } from "@/components/finder/empty-state";
 import { ErrorState } from "@/components/finder/error-state";
 import { LeadGate } from "@/components/finder/lead-gate";
+import { SearchHelpPopup } from "@/components/finder/search-help-popup";
 import { CollegeCardSkeleton, CollegeTableRowSkeleton } from "@/components/ui/skeleton";
 import type { ViewMode } from "@/types";
 
@@ -19,6 +20,8 @@ const STORAGE_KEY = "ec_lead_submitted";
 export function RankFinderClient() {
   const [viewMode, setViewMode] = useState<ViewMode>("card");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [showHelpPopup, setShowHelpPopup] = useState(false);
+  const [dismissedPopupKey, setDismissedPopupKey] = useState("");
 
   // Check if lead was already submitted this session
   const [leadSubmitted, setLeadSubmitted] = useState(() => {
@@ -43,8 +46,37 @@ export function RankFinderClient() {
   const hasActiveFilters = Object.entries(filters).some(
     ([key, value]) => key !== "mode" && value !== ""
   );
+  const hasSearchContext = hasActiveFilters || total > 0;
   const userRank = filters.rank ? parseInt(filters.rank, 10) : undefined;
   const isWebOptionsMode = filters.mode === "web-options";
+  const popupSearchKey = JSON.stringify({
+    mode: filters.mode,
+    rank: filters.rank,
+    category: filters.category,
+    gender: filters.gender,
+    branch: filters.branch,
+    branches: filters.branches,
+    search: filters.search,
+    total,
+  });
+
+  useEffect(() => {
+    setShowHelpPopup(false);
+
+    if (!leadSubmitted || isLoading || isError || !hasSearchContext) return;
+    if (dismissedPopupKey === popupSearchKey) return;
+
+    const timer = window.setTimeout(() => {
+      setShowHelpPopup(true);
+    }, 3500);
+
+    return () => window.clearTimeout(timer);
+  }, [leadSubmitted, isLoading, isError, hasSearchContext, dismissedPopupKey, popupSearchKey]);
+
+  function closeHelpPopup() {
+    setDismissedPopupKey(popupSearchKey);
+    setShowHelpPopup(false);
+  }
 
   function handleLeadUnlock(data: { name: string; phone: string; rank: string; category?: string; gender?: string; course?: string }) {
     sessionStorage.setItem(STORAGE_KEY, "1");
@@ -102,6 +134,9 @@ export function RankFinderClient() {
   return (
     <>
       {!leadSubmitted && <LeadGate onUnlock={handleLeadUnlock} />}
+      {showHelpPopup && (
+        <SearchHelpPopup mode={filters.mode} onClose={closeHelpPopup} />
+      )}
     <main className="pt-20 pb-16">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Header */}
@@ -195,16 +230,16 @@ export function RankFinderClient() {
 
           {/* Mobile filters overlay */}
           {mobileFiltersOpen && (
-            <div className="lg:hidden fixed inset-0 z-40 bg-black/40" onClick={() => setMobileFiltersOpen(false)}>
+            <div className="lg:hidden fixed inset-0 z-[80] bg-black/45 backdrop-blur-sm" onClick={() => setMobileFiltersOpen(false)}>
               <div
-                className="absolute right-0 top-0 bottom-0 w-80 bg-white shadow-xl overflow-y-auto p-4"
+                className="absolute right-0 top-0 bottom-0 w-[min(100vw-1.25rem,24rem)] bg-white shadow-2xl overflow-y-auto p-4"
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="mb-4 flex items-center justify-between">
-                  <span className="font-semibold text-gray-900">Filters</span>
+                <div className="sticky top-0 z-10 -mx-4 -mt-4 mb-4 flex items-center justify-between border-b border-gray-100 bg-white px-4 py-4">
+                  <span className="font-display text-lg font-bold text-gray-900">Filters</span>
                   <button
                     onClick={() => setMobileFiltersOpen(false)}
-                    className="text-gray-500 hover:text-gray-900 text-sm font-medium"
+                    className="rounded-lg px-3 py-1.5 text-sm font-semibold text-green-600 transition-colors hover:bg-green-50 hover:text-green-700"
                   >
                     Done
                   </button>

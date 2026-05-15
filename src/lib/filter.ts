@@ -115,7 +115,8 @@ export function filterColleges(filters: CollegeFilters): {
 
   // Pagination
   const safePage = Math.max(1, page);
-  const safePageSize = Math.min(Math.max(1, pageSize), 50);
+  const maxPageSize = mode === "web-options" ? 500 : 50;
+  const safePageSize = Math.min(Math.max(1, pageSize), maxPageSize);
   const start = (safePage - 1) * safePageSize;
   const paginated = results.slice(start, start + safePageSize);
 

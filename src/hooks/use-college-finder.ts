@@ -48,7 +48,6 @@ function buildQueryString(filters: FilterState, page: number): string {
   if (filters.branch) params.set("branch", filters.branch);
   if (filters.branches) params.set("branches", filters.branches);
   if (filters.search) params.set("search", filters.search);
-  if (filters.mode === "web-options") params.set("pageSize", "100");
   if (page > 1) params.set("page", String(page));
   return params.toString();
 }

@@ -1,6 +1,7 @@
 "use client";
 
-import { Search, X, SlidersHorizontal } from "lucide-react";
+import { useState } from "react";
+import { Check, ChevronDown, Search, X, SlidersHorizontal } from "lucide-react";
 import { BRANCHES, CATEGORIES, GENDERS } from "@/lib/mock-data";
 import type { FilterState } from "@/hooks/use-college-finder";
 
@@ -14,18 +15,9 @@ interface FiltersProps {
 
 const SELECT_CLS =
   "w-full text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent";
-const WEB_OPTION_BRANCHES = [
-  { value: "CSE", label: "CSE" },
-  { value: "CSM", label: "AI & ML" },
-  { value: "CSD", label: "Data Science" },
-  { value: "INF", label: "IT" },
-  { value: "ECE", label: "ECE" },
-  { value: "EEE", label: "EEE" },
-  { value: "MEC", label: "Mechanical" },
-  { value: "CIV", label: "Civil" },
-];
 
 export function FiltersPanel({ filters, onUpdate, onReset, total, isLoading }: FiltersProps) {
+  const [branchDropdownOpen, setBranchDropdownOpen] = useState(false);
   const selectedBranches = filters.branches ? filters.branches.split(",").filter(Boolean) : [];
   const hasActiveFilters = Object.entries(filters).some(
     ([key, value]) => key !== "mode" && value !== ""
@@ -38,6 +30,13 @@ export function FiltersPanel({ filters, onUpdate, onReset, total, isLoading }: F
 
     onUpdate("branches", next.join(","));
   }
+
+  const webOptionBranchLabel =
+    selectedBranches.length === 0
+      ? "All Branches"
+      : selectedBranches.length === 1
+        ? selectedBranches[0]
+        : `${selectedBranches.length} branches selected`;
 
   return (
     <div className="bg-white border border-gray-100 rounded-xl p-5 space-y-5 sticky top-20">
@@ -169,22 +168,61 @@ export function FiltersPanel({ filters, onUpdate, onReset, total, isLoading }: F
       {filters.mode === "web-options" ? (
         <div>
           <label className="block text-xs font-medium text-gray-600 mb-1.5">Branches</label>
-          <div className="grid grid-cols-2 gap-1.5">
-            {WEB_OPTION_BRANCHES.map((branch) => (
-              <label
-                key={branch.value}
-                className="flex items-center gap-1.5 rounded-lg border border-gray-200 px-2 py-1.5 text-xs text-gray-700"
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedBranches.includes(branch.value)}
-                  onChange={() => toggleWebOptionBranch(branch.value)}
-                  className="h-3 w-3 accent-green-600"
-                />
-                {branch.label}
-              </label>
-            ))}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setBranchDropdownOpen((open) => !open)}
+              className="flex w-full items-center justify-between gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-left text-sm text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            >
+              <span className="truncate">{webOptionBranchLabel}</span>
+              <ChevronDown
+                className={`h-4 w-4 shrink-0 text-gray-400 transition-transform ${
+                  branchDropdownOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+
+            {branchDropdownOpen && (
+              <div className="absolute left-0 right-0 top-full z-30 mt-1 max-h-64 overflow-y-auto rounded-xl border border-gray-200 bg-white p-1.5 shadow-xl shadow-gray-900/10">
+                <button
+                  type="button"
+                  onClick={() => onUpdate("branches", "")}
+                  className="mb-1 flex w-full items-center justify-between rounded-lg px-2.5 py-2 text-left text-xs font-medium text-gray-500 hover:bg-gray-50"
+                >
+                  All Branches
+                  {selectedBranches.length === 0 && <Check className="h-3.5 w-3.5 text-green-600" />}
+                </button>
+
+                {BRANCHES.map((branch) => {
+                  const checked = selectedBranches.includes(branch);
+
+                  return (
+                    <label
+                      key={branch}
+                      className="flex cursor-pointer items-start gap-2 rounded-lg px-2.5 py-2 text-xs text-gray-700 hover:bg-green-50"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => toggleWebOptionBranch(branch)}
+                        className="mt-0.5 h-3.5 w-3.5 rounded border-gray-300 accent-green-600"
+                      />
+                      <span className="leading-snug">{branch}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            )}
           </div>
+          {selectedBranches.length > 0 && (
+            <button
+              type="button"
+              onClick={() => onUpdate("branches", "")}
+              className="mt-2 text-xs font-medium text-green-600 hover:text-green-800"
+            >
+              Clear selected branches
+            </button>
+          )}
         </div>
       ) : (
         <div>
