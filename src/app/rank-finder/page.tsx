@@ -5,9 +5,33 @@ import { Footer } from "@/components/layout/footer";
 import { RankFinderClient } from "./client";
 
 export const metadata: Metadata = {
-  title: "College Finder",
+  title: "TG EAPCET College Predictor & Web Options",
   description:
-    "Search and filter Telangana engineering colleges by your EAMCET rank, category, gender and branch.",
+    "Use EasyCollege to predict eligible Telangana engineering colleges by TG EAPCET rank, category, gender, branch, and web options.",
+  alternates: {
+    canonical: "/rank-finder",
+  },
+  openGraph: {
+    title: "TG EAPCET College Predictor & Web Options",
+    description:
+      "Predict eligible Telangana engineering colleges and shortlist web options using your TG EAPCET rank.",
+    url: "/rank-finder",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "EasyCollege TG EAPCET College Predictor",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "TG EAPCET College Predictor & Web Options",
+    description:
+      "Predict eligible Telangana engineering colleges and shortlist web options using your TG EAPCET rank.",
+    images: ["/opengraph-image"],
+  },
 };
 
 export default function RankFinderPage() {

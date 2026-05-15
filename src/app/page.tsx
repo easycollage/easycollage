@@ -274,6 +274,60 @@ export default function HomePage() {
         </div>
       </section>
 
+
+        {/* ═══════════════════════════════════════════
+          COMPARISON — dark section
+      ════════════════════════════════════════════ */}
+      <section className="bg-[#f8f9f6] py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+          <Reveal className="mb-14 text-center">
+            <SectionPill>
+              <GraduationCap className="h-3 w-3" /> TG EAPCET 2026
+            </SectionPill>
+            <h2 className="font-display mt-4 text-3xl font-extrabold leading-[1.1] tracking-[-0.025em] text-gray-950 sm:text-4xl xl:text-5xl">
+              Courses Offered
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-gray-500">
+              Explore the courses available through TG EAPCET 2026 for MPC and BiPC streams.
+            </p>
+          </Reveal>
+
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+            {COURSE_GROUPS.map((group, i) => (
+              <Reveal key={group.title} delay={i * 100}>
+                <div className="h-full rounded-3xl border border-gray-100 bg-white p-6 shadow-xl shadow-gray-950/[0.04] transition-all duration-300 hover:-translate-y-1 hover:border-green-200 hover:shadow-2xl hover:shadow-green-900/[0.06] sm:p-8">
+                  <div className="mb-6 flex items-start justify-between gap-4">
+                    <div>
+                      <h3 className="font-display text-xl font-bold text-gray-950">
+                        {group.title}
+                      </h3>
+                      <p className="mt-1 text-sm font-semibold text-green-600">
+                        {group.stream}
+                      </p>
+                    </div>
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-green-50 text-green-600 ring-1 ring-green-100">
+                      <GraduationCap className="h-5 w-5" />
+                    </div>
+                  </div>
+
+                  <div className="grid gap-2">
+                    {group.courses.map((course) => (
+                      <div
+                        key={course}
+                        className="flex items-start gap-3 rounded-xl border border-gray-100 bg-gray-50/70 px-3.5 py-3 text-sm text-gray-700"
+                      >
+                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-green-500" />
+                        <span>{course}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ═══════════════════════════════════════════
           FEATURES — bento grid
       ════════════════════════════════════════════ */}
@@ -331,58 +385,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════
-          COMPARISON — dark section
-      ════════════════════════════════════════════ */}
-      <section className="bg-[#f8f9f6] py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
-          <Reveal className="mb-14 text-center">
-            <SectionPill>
-              <GraduationCap className="h-3 w-3" /> TG EAPCET 2026
-            </SectionPill>
-            <h2 className="font-display mt-4 text-3xl font-extrabold leading-[1.1] tracking-[-0.025em] text-gray-950 sm:text-4xl xl:text-5xl">
-              Courses Offered
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-gray-500">
-              Explore the courses available through TG EAPCET 2026 for MPC and BiPC streams.
-            </p>
-          </Reveal>
-
-          <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-            {COURSE_GROUPS.map((group, i) => (
-              <Reveal key={group.title} delay={i * 100}>
-                <div className="h-full rounded-3xl border border-gray-100 bg-white p-6 shadow-xl shadow-gray-950/[0.04] transition-all duration-300 hover:-translate-y-1 hover:border-green-200 hover:shadow-2xl hover:shadow-green-900/[0.06] sm:p-8">
-                  <div className="mb-6 flex items-start justify-between gap-4">
-                    <div>
-                      <h3 className="font-display text-xl font-bold text-gray-950">
-                        {group.title}
-                      </h3>
-                      <p className="mt-1 text-sm font-semibold text-green-600">
-                        {group.stream}
-                      </p>
-                    </div>
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-green-50 text-green-600 ring-1 ring-green-100">
-                      <GraduationCap className="h-5 w-5" />
-                    </div>
-                  </div>
-
-                  <div className="grid gap-2">
-                    {group.courses.map((course) => (
-                      <div
-                        key={course}
-                        className="flex items-start gap-3 rounded-xl border border-gray-100 bg-gray-50/70 px-3.5 py-3 text-sm text-gray-700"
-                      >
-                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-green-500" />
-                        <span>{course}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+    
 
       <section className="relative overflow-hidden bg-gray-950 py-24 sm:py-32">
         <div className="pointer-events-none absolute left-1/2 top-0 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-green-500/8 blur-[100px]" />
