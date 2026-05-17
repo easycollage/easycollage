@@ -12,6 +12,7 @@ import {
   GraduationCap,
   CheckCircle2,
   CalendarDays,
+  Download,
   MessageCircle,
   Sparkles,
   TrendingUp,
@@ -171,6 +172,30 @@ function SectionPill({ children }: { children: React.ReactNode }) {
   );
 }
 
+function SectionCta({
+  label = "Download Web Options",
+  dark = false,
+}: {
+  label?: string;
+  dark?: boolean;
+}) {
+  const Icon = label.toLowerCase().includes("download") ? Download : ArrowRight;
+
+  return (
+    <Link
+      href="/rank-finder?mode=web-options"
+      className={`group inline-flex items-center justify-center gap-2.5 rounded-2xl px-6 py-3 text-sm font-bold transition-all duration-300 hover:-translate-y-0.5 ${
+        dark
+          ? "border border-white/15 bg-white/10 text-white shadow-lg shadow-black/20 backdrop-blur-sm hover:border-white/25 hover:bg-white/15"
+          : "bg-green-500 text-white shadow-xl shadow-green-500/25 hover:bg-green-400"
+      }`}
+    >
+      {label}
+      <Icon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+    </Link>
+  );
+}
+
 export default function HomePage() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-[#f8f9f6] font-sans text-gray-900 antialiased selection:bg-green-200 selection:text-green-900">
@@ -244,8 +269,8 @@ export default function HomePage() {
                   href="/rank-finder?mode=web-options"
                   className="group inline-flex items-center justify-center gap-2.5 rounded-2xl border border-green-200 bg-white px-7 py-4 text-sm font-bold text-gray-700 shadow-lg shadow-green-900/[0.04] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-green-300 hover:bg-green-50"
                 >
-                  Web Options
-                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  Download Web Options
+                  <Download className="h-4 w-4" />
                 </Link>
               </div>
 
@@ -290,6 +315,9 @@ export default function HomePage() {
             <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-gray-500">
               Explore the courses available through TG EAPCET 2026 for MPC and BiPC streams.
             </p>
+            <div className="mt-7">
+              <SectionCta />
+            </div>
           </Reveal>
 
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
@@ -349,6 +377,9 @@ export default function HomePage() {
                 We built the tool we wish we had during EAMCET counselling. Simple, accurate, fast.
               </p>
             </div>
+            <div className="mt-7">
+              <SectionCta label="Start Web Options" />
+            </div>
           </Reveal>
 
           <div className="grid auto-rows-[1fr] grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -401,6 +432,9 @@ export default function HomePage() {
               Web options decide the final allotment. A small mistake in choice order
               or cutoff understanding can change everything.
             </p>
+            <div className="mt-7">
+              <SectionCta dark />
+            </div>
           </Reveal>
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:gap-6">
@@ -470,6 +504,9 @@ export default function HomePage() {
               <p className="max-w-sm text-base leading-relaxed text-gray-500 lg:text-right">
                 Meet the team shaping a simpler, clearer college search for every Telangana student.
               </p>
+            </div>
+            <div className="mt-7">
+              <SectionCta label="Get Web Options" />
             </div>
           </Reveal>
 
@@ -545,6 +582,7 @@ export default function HomePage() {
                     </p>
                   </div>
                   <div className="flex flex-col gap-3 sm:flex-row xl:shrink-0">
+                    <SectionCta dark label="Download Web Options" />
                     <button
                       type="button"
                       data-cal-link="easy-collage/10min"
@@ -611,18 +649,11 @@ export default function HomePage() {
             </p>
             <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
-                href="/rank-finder"
+                href="/rank-finder?mode=web-options"
                 className="group inline-flex items-center gap-3 rounded-2xl bg-white px-8 py-4 text-sm font-bold text-green-700 shadow-2xl shadow-green-900/30 transition-all duration-300 hover:-translate-y-1 hover:bg-green-50 hover:shadow-green-900/40"
               >
-                College Prediction
-                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
-              <Link
-                href="/rank-finder?mode=web-options"
-                className="group inline-flex items-center gap-3 rounded-2xl border border-white/25 bg-white/10 px-8 py-4 text-sm font-bold text-white shadow-2xl shadow-green-900/20 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:bg-white/15"
-              >
-                Web Options
-                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                Download Web Options
+                <Download className="h-4 w-4" />
               </Link>
             </div>
           </Reveal>

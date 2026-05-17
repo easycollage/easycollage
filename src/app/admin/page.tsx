@@ -4,7 +4,17 @@ import { useEffect, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import type { Route } from "next";
 import { useRouter } from "next/navigation";
-import { AlertTriangle, ChevronLeft, ChevronRight, Loader2, LogOut, Trash2 } from "lucide-react";
+import {
+  AlertTriangle,
+  ChevronLeft,
+  ChevronRight,
+  Eye,
+  EyeOff,
+  KeyRound,
+  Loader2,
+  LogOut,
+  Trash2,
+} from "lucide-react";
 
 interface Lead {
   id: string;
@@ -33,6 +43,16 @@ export default function AdminDashboard() {
   const [loggingOut, setLoggingOut] = useState(false);
   const [confirmDialog, setConfirmDialog] = useState<ConfirmDialogState>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [passwordDialogOpen, setPasswordDialogOpen] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [passwordSuccess, setPasswordSuccess] = useState("");
+  const [changingPassword, setChangingPassword] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
     fetchLeads();
@@ -121,6 +141,57 @@ export default function AdminDashboard() {
     }
   }
 
+  function resetPasswordForm() {
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+    setPasswordError("");
+    setPasswordSuccess("");
+    setShowCurrentPassword(false);
+    setShowNewPassword(false);
+    setShowConfirmPassword(false);
+  }
+
+  async function changePassword(event: React.FormEvent) {
+    event.preventDefault();
+    setPasswordError("");
+    setPasswordSuccess("");
+
+    if (newPassword.length < 8) {
+      setPasswordError("New password must be at least 8 characters.");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setPasswordError("New password and confirm password do not match.");
+      return;
+    }
+
+    setChangingPassword(true);
+
+    try {
+      const res = await fetch("/api/auth/change-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to change password");
+      }
+
+      setPasswordSuccess("Password changed successfully.");
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (error) {
+      setPasswordError(error instanceof Error ? error.message : "Failed to change password");
+    } finally {
+      setChangingPassword(false);
+    }
+  }
+
   const isDeleteDialog = confirmDialog?.type === "delete";
   const dialogTitle = isDeleteDialog ? "Delete lead?" : "Logout?";
   const dialogDescription = isDeleteDialog
@@ -146,14 +217,27 @@ export default function AdminDashboard() {
               {leads.filter((lead) => !lead.isRead).length} unread
             </span>
           </h2>
-          <button
-            onClick={handleLogout}
-            disabled={loggingOut}
-            className="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-2 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            <LogOut className="w-4 h-4" />
-            Logout
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                resetPasswordForm();
+                setPasswordDialogOpen(true);
+              }}
+              className="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+            >
+              <KeyRound className="w-4 h-4" />
+              Change Password
+            </button>
+            <button
+              onClick={handleLogout}
+              disabled={loggingOut}
+              className="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-2 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <LogOut className="w-4 h-4" />
+              Logout
+            </button>
+          </div>
         </div>
 
         {loading ? (
@@ -301,6 +385,142 @@ export default function AdminDashboard() {
                 {confirmButtonText}
               </button>
             </div>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
+
+      <Dialog.Root
+        open={passwordDialogOpen}
+        onOpenChange={(open) => {
+          if (changingPassword) return;
+          setPasswordDialogOpen(open);
+          if (!open) resetPasswordForm();
+        }}
+      >
+        <Dialog.Portal>
+          <Dialog.Overlay className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[2px]" />
+          <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white p-6 shadow-2xl outline-none">
+            <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-full bg-green-50 text-green-600">
+              <KeyRound className="h-5 w-5" />
+            </div>
+            <Dialog.Title className="text-lg font-bold text-gray-900">
+              Change admin password
+            </Dialog.Title>
+            <Dialog.Description className="mt-2 text-sm leading-6 text-gray-600">
+              Enter your current password and choose a new password for this admin account.
+            </Dialog.Description>
+
+            <form onSubmit={changePassword} className="mt-5 space-y-4">
+              <div>
+                <label className="mb-1 block text-sm font-medium text-gray-700">
+                  Current password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showCurrentPassword ? "text" : "password"}
+                    value={currentPassword}
+                    onChange={(event) => setCurrentPassword(event.target.value)}
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-green-500"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowCurrentPassword((show) => !show)}
+                    className="absolute inset-y-0 right-2 inline-flex items-center justify-center px-1 text-gray-400 hover:text-gray-700"
+                    aria-label={showCurrentPassword ? "Hide current password" : "Show current password"}
+                  >
+                    {showCurrentPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
+              </div>
+              <div>
+                <label className="mb-1 block text-sm font-medium text-gray-700">
+                  New password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showNewPassword ? "text" : "password"}
+                    value={newPassword}
+                    onChange={(event) => setNewPassword(event.target.value)}
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-green-500"
+                    minLength={8}
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowNewPassword((show) => !show)}
+                    className="absolute inset-y-0 right-2 inline-flex items-center justify-center px-1 text-gray-400 hover:text-gray-700"
+                    aria-label={showNewPassword ? "Hide new password" : "Show new password"}
+                  >
+                    {showNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+              </div>
+              <div>
+                <label className="mb-1 block text-sm font-medium text-gray-700">
+                  Confirm new password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    value={confirmPassword}
+                    onChange={(event) => setConfirmPassword(event.target.value)}
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-green-500"
+                    minLength={8}
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword((show) => !show)}
+                    className="absolute inset-y-0 right-2 inline-flex items-center justify-center px-1 text-gray-400 hover:text-gray-700"
+                    aria-label={
+                      showConfirmPassword ? "Hide confirm password" : "Show confirm password"
+                    }
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {passwordError ? (
+                <p className="rounded-lg bg-red-50 p-3 text-sm text-red-600">
+                  {passwordError}
+                </p>
+              ) : null}
+              {passwordSuccess ? (
+                <p className="rounded-lg bg-green-50 p-3 text-sm text-green-700">
+                  {passwordSuccess}
+                </p>
+              ) : null}
+
+              <div className="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:justify-end">
+                <Dialog.Close asChild>
+                  <button
+                    type="button"
+                    disabled={changingPassword}
+                    className="inline-flex h-10 items-center justify-center rounded-lg border border-gray-200 px-4 text-sm font-semibold text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    Cancel
+                  </button>
+                </Dialog.Close>
+                <button
+                  type="submit"
+                  disabled={changingPassword}
+                  className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-gray-900 px-4 text-sm font-semibold text-white hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {changingPassword ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+                  Save Password
+                </button>
+              </div>
+            </form>
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog.Root>

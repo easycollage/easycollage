@@ -17,7 +17,7 @@ const bricolage = Bricolage_Grotesque({
   display: "swap",
 });
 
-const SITE_URL = "https://easycollege.in";
+const SITE_URL = "https://www.easycollage.in";
 const SITE_NAME = "EasyCollege";
 const SITE_DESCRIPTION =
   "Find Telangana engineering colleges by TG EAPCET rank. Check college prediction, web options, cutoffs, category, gender, and branch filters instantly.";
@@ -46,7 +46,7 @@ const legacyMetadata: Metadata = {
     locale: "en_IN",
     siteName: "EasyCollege",
   },
-  metadataBase: new URL("https://easycollege.in"),
+  metadataBase: new URL(SITE_URL),
 };
 void legacyMetadata;
 
