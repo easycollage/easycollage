@@ -1,14 +1,11 @@
 "use client";
 
 import { CalendarDays, HelpCircle, MessageCircle, Sparkles, X } from "lucide-react";
+import { buildWhatsAppRedirectUrl } from "@/lib/whatsapp";
 
-const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
-const WHATSAPP_MESSAGE = encodeURIComponent(
+const WHATSAPP_URL = buildWhatsAppRedirectUrl(
   "Hi EasyCollege, I have a doubt in finding colleges. Please help me."
 );
-const WHATSAPP_URL = WHATSAPP_NUMBER
-  ? `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`
-  : `https://wa.me/?text=${WHATSAPP_MESSAGE}`;
 
 interface SearchHelpPopupProps {
   mode: "eligible" | "web-options";

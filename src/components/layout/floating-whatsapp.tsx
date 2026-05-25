@@ -2,14 +2,11 @@
 
 import { MessageCircle } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { buildWhatsAppRedirectUrl } from "@/lib/whatsapp";
 
-const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
-const WHATSAPP_MESSAGE = encodeURIComponent(
+const WHATSAPP_URL = buildWhatsAppRedirectUrl(
   "Hi EasyCollege, I need help with TS EAMCET counselling."
 );
-const WHATSAPP_URL = WHATSAPP_NUMBER
-  ? `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`
-  : `https://wa.me/?text=${WHATSAPP_MESSAGE}`;
 
 export function FloatingWhatsApp() {
   const pathname = usePathname();

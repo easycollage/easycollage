@@ -22,16 +22,13 @@ import { Footer } from "@/components/layout/footer";
 import { HeroLeadForm } from "@/components/finder/hero-lead-form";
 import { AnimatedStats } from "@/components/landing/animated-stats";
 import { Reveal } from "@/components/landing/reveal";
+import { buildWhatsAppRedirectUrl } from "@/lib/whatsapp";
 
 const COUNSELLING_YEAR = new Date().getFullYear();
 const HERO_BADGE_LABEL = `TS EAMCET ${COUNSELLING_YEAR} Counselling Tool`;
-const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
-const COUNSELLING_MESSAGE = encodeURIComponent(
+const COUNSELLING_WHATSAPP_URL = buildWhatsAppRedirectUrl(
   "Hi EasyCollege, I am confused about TS EAMCET web options. Please guide me."
 );
-const COUNSELLING_WHATSAPP_URL = WHATSAPP_NUMBER
-  ? `https://wa.me/${WHATSAPP_NUMBER}?text=${COUNSELLING_MESSAGE}`
-  : `https://wa.me/?text=${COUNSELLING_MESSAGE}`;
 
 const FEATURES = [
   {
