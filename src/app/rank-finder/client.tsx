@@ -12,22 +12,35 @@ import { ErrorState } from "@/components/finder/error-state";
 import { LeadGate } from "@/components/finder/lead-gate";
 import { SearchHelpPopup } from "@/components/finder/search-help-popup";
 import { CollegeCardSkeleton, CollegeTableRowSkeleton } from "@/components/ui/skeleton";
-import type { ViewMode } from "@/types";
+import type { Exam, ViewMode } from "@/types";
 
 const PAGE_SIZE = 12;
 const STORAGE_KEY = "ec_lead_submitted";
 
-export function RankFinderClient() {
+const EXAM_COPY: Record<Exam, { title: string; examLabel: string; description: string }> = {
+  ts: {
+    title: "TS EAMCET College Finder",
+    examLabel: "TS EAMCET",
+    description:
+      "Filter by rank, category, branch and more to find eligible colleges across Telangana.",
+  },
+  ap: {
+    title: "AP EAMCET College Finder",
+    examLabel: "AP EAMCET",
+    description:
+      "Filter by rank, category, branch and more to find eligible colleges across Andhra Pradesh.",
+  },
+};
+
+export function RankFinderClient({ exam = "ts" }: { exam?: Exam }) {
+  const examCopy = EXAM_COPY[exam];
+  const storageKey = `${STORAGE_KEY}_${exam}`;
   const [viewMode, setViewMode] = useState<ViewMode>("card");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [showHelpPopup, setShowHelpPopup] = useState(false);
   const [dismissedPopupKey, setDismissedPopupKey] = useState("");
-
-  // Check if lead was already submitted this session
-  const [leadSubmitted, setLeadSubmitted] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return sessionStorage.getItem(STORAGE_KEY) === "1";
-  });
+  const [leadSubmitted, setLeadSubmitted] = useState(false);
+  const [leadStorageReady, setLeadStorageReady] = useState(false);
 
   const {
     colleges,
@@ -41,15 +54,16 @@ export function RankFinderClient() {
     updateFilter,
     setPage,
     reset,
-  } = useCollegeFinder();
+  } = useCollegeFinder({ exam, enabled: leadSubmitted });
 
   const hasActiveFilters = Object.entries(filters).some(
-    ([key, value]) => key !== "mode" && value !== ""
+    ([key, value]) => key !== "mode" && key !== "exam" && value !== ""
   );
   const hasSearchContext = hasActiveFilters || total > 0;
   const userRank = filters.rank ? parseInt(filters.rank, 10) : undefined;
   const isWebOptionsMode = filters.mode === "web-options";
   const popupSearchKey = JSON.stringify({
+    exam: filters.exam,
     mode: filters.mode,
     rank: filters.rank,
     category: filters.category,
@@ -59,6 +73,16 @@ export function RankFinderClient() {
     search: filters.search,
     total,
   });
+
+  useEffect(() => {
+    try {
+      setLeadSubmitted(sessionStorage.getItem(storageKey) === "1");
+    } catch {
+      setLeadSubmitted(false);
+    } finally {
+      setLeadStorageReady(true);
+    }
+  }, [storageKey]);
 
   useEffect(() => {
     setShowHelpPopup(false);
@@ -79,17 +103,42 @@ export function RankFinderClient() {
   }
 
   function handleLeadUnlock(data: { name: string; phone: string; rank: string; category?: string; gender?: string; course?: string }) {
-    sessionStorage.setItem(STORAGE_KEY, "1");
-    setLeadSubmitted(true);
+    try {
+      sessionStorage.setItem(storageKey, "1");
+    } catch {
+      // Storage can be unavailable in some privacy modes; keep the current unlock working.
+    }
     // Pre-fill filters from what they entered in the form
     if (data.rank) updateFilter("rank", data.rank);
     if (data.category) updateFilter("category", data.category);
     if (data.gender) updateFilter("gender", data.gender);
     if (data.course) updateFilter("branch", data.course);
+    setLeadSubmitted(true);
+  }
+
+  if (!leadStorageReady) {
+    return <main className="pt-20 pb-16" />;
+  }
+
+  if (!leadSubmitted) {
+    return (
+      <main className="pt-20 pb-16">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="border-b border-gray-100 py-8">
+            <h1 className="font-display mb-1 text-2xl font-bold text-gray-900 sm:text-3xl">
+              {examCopy.title}
+            </h1>
+            <p className="text-sm text-gray-500">{examCopy.description}</p>
+          </div>
+          <LeadGate onUnlock={handleLeadUnlock} exam={exam} examLabel={examCopy.examLabel} />
+        </div>
+      </main>
+    );
   }
 
   async function downloadWebOptions() {
     const params = new URLSearchParams();
+    params.set("exam", exam);
     params.set("mode", "web-options");
     params.set("pageSize", "500");
     if (filters.rank) params.set("rank", filters.rank);
@@ -126,32 +175,31 @@ export function RankFinderClient() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `easycollege-web-options-rank-${filters.rank || "all"}.csv`;
+    link.download = `easycollege-${exam}-web-options-rank-${filters.rank || "all"}.csv`;
     link.click();
     URL.revokeObjectURL(url);
   }
 
   return (
     <>
-      {!leadSubmitted && <LeadGate onUnlock={handleLeadUnlock} />}
       {showHelpPopup && (
-        <SearchHelpPopup mode={filters.mode} onClose={closeHelpPopup} />
+        <SearchHelpPopup exam={exam} mode={filters.mode} onClose={closeHelpPopup} />
       )}
     <main className="pt-20 pb-16">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="py-8 border-b border-gray-100">
           <h1 className="font-display font-bold text-2xl sm:text-3xl text-gray-900 mb-1">
-            College Finder
+            {examCopy.title}
           </h1>
           <p className="text-sm text-gray-500">
-            Filter by rank, category, branch and more to find eligible colleges across Telangana
+            {examCopy.description}
           </p>
         </div>
 
         {/* Toolbar */}
-        <div className="flex items-center justify-between py-4">
-          <div className="flex items-center gap-3">
+        <div className="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex min-w-0 flex-wrap items-center gap-3">
             {/* Mobile filter toggle */}
             <button
               className="lg:hidden flex items-center gap-2 px-3 py-2 text-sm font-medium border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
@@ -161,13 +209,13 @@ export function RankFinderClient() {
               Filters
               {hasActiveFilters && (
                 <span className="w-5 h-5 rounded-full bg-green-600 text-white text-xs flex items-center justify-center font-semibold">
-                {Object.entries(filters).filter(([key, value]) => key !== "mode" && Boolean(value)).length}
+                {Object.entries(filters).filter(([key, value]) => key !== "mode" && key !== "exam" && Boolean(value)).length}
                 </span>
               )}
             </button>
 
             {!isLoading && total > 0 && (
-              <span className="text-sm text-gray-500">
+              <span className="min-w-0 text-sm text-gray-500">
                 <span className="font-semibold text-gray-900">{total}</span>{" "}
                 {isWebOptionsMode ? "web option" : "result"}{total !== 1 ? "s" : ""}
                 {filters.rank && (
@@ -180,7 +228,7 @@ export function RankFinderClient() {
           </div>
 
           {/* View toggle */}
-          <div className="flex items-center gap-1 border border-gray-200 rounded-lg p-0.5 bg-white">
+          <div className="flex w-fit max-w-full items-center gap-1 overflow-x-auto rounded-lg border border-gray-200 bg-white p-0.5">
             {isWebOptionsMode && total > 0 && (
               <button
                 onClick={downloadWebOptions}

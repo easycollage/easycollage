@@ -32,9 +32,9 @@ export function CollegeCard({ college, userRank }: CollegeCardProps) {
           <h3 className="font-display font-semibold text-gray-900 text-sm leading-tight line-clamp-2 mb-1">
             {college.collegeName}
           </h3>
-          <div className="flex items-center gap-1 text-xs text-gray-500">
+          <div className="flex min-w-0 items-center gap-1 text-xs text-gray-500">
             <MapPin className="w-3 h-3 shrink-0" />
-            <span>{college.location}</span>
+            <span className="min-w-0 truncate">{college.location}</span>
             <span className="text-gray-300 mx-1">.</span>
             <span className="font-mono text-xs">{college.collegeCode}</span>
           </div>
@@ -51,7 +51,7 @@ export function CollegeCard({ college, userRank }: CollegeCardProps) {
 
       <div className="flex items-center gap-1.5 mb-3">
         <Building2 className="w-3.5 h-3.5 text-green-600 shrink-0" />
-        <span className="text-sm text-gray-700 font-medium">{college.branch}</span>
+        <span className="min-w-0 text-sm font-medium leading-snug text-gray-700">{college.branch}</span>
         <span className="text-xs text-gray-400 font-mono">({college.branchCode})</span>
       </div>
 
@@ -70,7 +70,7 @@ export function CollegeCard({ college, userRank }: CollegeCardProps) {
         )}
       </div>
 
-      <div className="flex items-center justify-between pt-3 border-t border-gray-50">
+      <div className="flex flex-col gap-2 border-t border-gray-50 pt-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-1.5 text-xs text-gray-600">
           <TrendingUp className="w-3.5 h-3.5 text-green-600" />
           <span>

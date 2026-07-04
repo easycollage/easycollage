@@ -19,13 +19,12 @@ import {
 } from "lucide-react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { HeroLeadForm } from "@/components/finder/hero-lead-form";
 import { AnimatedStats } from "@/components/landing/animated-stats";
 import { Reveal } from "@/components/landing/reveal";
 import { buildWhatsAppRedirectUrl } from "@/lib/whatsapp";
 
 const COUNSELLING_YEAR = new Date().getFullYear();
-const HERO_BADGE_LABEL = `TS EAMCET ${COUNSELLING_YEAR} Counselling Tool`;
+const HERO_BADGE_LABEL = `TS & AP EAMCET ${COUNSELLING_YEAR} Counselling Tool`;
 const COUNSELLING_WHATSAPP_URL = buildWhatsAppRedirectUrl(
   "Hi EasyCollege, I am confused about TS EAMCET web options. Please guide me."
 );
@@ -40,9 +39,9 @@ const FEATURES = [
   },
   {
     icon: MapPin,
-    title: "Telangana-Specific Data",
+    title: "State-Specific Data",
     description:
-      "Built exclusively for TS EAMCET. Data covers colleges across Hyderabad, Warangal, Nizamabad and all districts.",
+      "Choose TS or AP before searching so students see only colleges for the selected counselling flow.",
     accent: "from-sky-400/15 to-blue-500/5",
   },
   {
@@ -76,11 +75,22 @@ const FEATURES = [
 ];
 
 const STATS = [
-  { value: "300+", label: "Colleges" },
+  { value: "500+", label: "Colleges" },
   { value: "10+", label: "Branches" },
   { value: "8", label: "Categories" },
   { value: "1-click", label: "Results" },
 ];
+
+const COLLEGE_LIST_DOWNLOADS = [
+  {
+    label: "Click to download the TS college list",
+    href: "/downloads/TGEAPCET_2025_LASTRANKS_SecondPhase.pdf",
+  },
+  {
+    label: "Click to download the AP college list",
+    href: "/downloads/APEAMCET2024LASTRANKDETAILSNONSW.pdf",
+  },
+] as const;
 
 const COURSE_GROUPS = [
   {
@@ -180,7 +190,7 @@ function SectionCta({
 
   return (
     <Link
-      href="/rank-finder?mode=web-options"
+      href="/ts-eamcet?mode=web-options"
       className={`group inline-flex items-center justify-center gap-2.5 rounded-2xl px-6 py-3 text-sm font-bold transition-all duration-300 hover:-translate-y-0.5 ${
         dark
           ? "border border-white/15 bg-white/10 text-white shadow-lg shadow-black/20 backdrop-blur-sm hover:border-white/25 hover:bg-white/15"
@@ -223,12 +233,12 @@ export default function HomePage() {
           <div className="grid min-h-[80vh] grid-cols-1 items-center gap-0 lg:grid-cols-2">
             {/* LEFT — dark, headline */}
             <div className="py-16 lg:py-0 lg:pr-16">
-              <div className="mb-8 inline-flex animate-fade-up items-center gap-2 rounded-full border border-green-200 bg-white/80 px-4 py-2 shadow-sm shadow-green-900/5 backdrop-blur-sm">
+              <div className="mb-8 inline-flex max-w-full animate-fade-up items-center gap-2 rounded-full border border-green-200 bg-white/80 px-4 py-2 shadow-sm shadow-green-900/5 backdrop-blur-sm">
                 <span className="relative flex h-2 w-2 shrink-0">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-green-400" />
                 </span>
-                <span className="text-xs font-semibold tracking-wide text-green-700">
+                <span className="min-w-0 text-left text-xs font-semibold leading-snug tracking-wide text-green-700">
                   {HERO_BADGE_LABEL}
                 </span>
               </div>
@@ -256,18 +266,18 @@ export default function HomePage() {
 
               <div className="animate-fade-up delay-300 mb-10 flex flex-col gap-3 sm:flex-row">
                 <Link
-                  href="/rank-finder"
-                  className="group inline-flex items-center justify-center gap-2.5 rounded-2xl bg-green-500 px-7 py-4 text-sm font-bold text-white shadow-2xl shadow-green-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:bg-green-400"
+                  href="/ts-eamcet"
+                  className="group inline-flex items-center justify-center gap-2.5 rounded-2xl border border-gray-200 bg-white px-7 py-4 text-sm font-bold text-gray-700 shadow-lg shadow-gray-900/[0.04] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
                 >
-                  College Prediction
+                  TS EAMCET
                   <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
                 <Link
-                  href="/rank-finder?mode=web-options"
-                  className="group inline-flex items-center justify-center gap-2.5 rounded-2xl border border-green-200 bg-white px-7 py-4 text-sm font-bold text-gray-700 shadow-lg shadow-green-900/[0.04] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-green-300 hover:bg-green-50"
+                  href="/ap-eamcet"
+                  className="group inline-flex items-center justify-center gap-2.5 rounded-2xl border border-gray-200 bg-white px-7 py-4 text-sm font-bold text-gray-700 shadow-lg shadow-gray-900/[0.04] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
                 >
-                  Download Web Options
-                  <Download className="h-4 w-4" />
+                  AP EAMCET
+                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </div>
 
@@ -281,9 +291,39 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* RIGHT — light, form */}
+            {/* RIGHT - exam guidance */}
             <div className="pb-16 lg:py-0 lg:pl-12 xl:pl-16">
-              <HeroLeadForm />
+              <div className="animate-fade-up delay-200 rounded-[2rem] border border-green-100 bg-white/80 p-6 shadow-2xl shadow-green-900/[0.08] backdrop-blur-sm sm:p-8">
+                <div className="mb-6 flex items-center gap-3">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-green-600 text-white shadow-lg shadow-green-600/25">
+                    <GraduationCap className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-600">
+                      Choose Exam
+                    </p>
+                    <h2 className="font-display text-xl font-bold text-gray-950">
+                      Separate results for each state
+                    </h2>
+                  </div>
+                </div>
+
+                <div className="grid gap-3">
+                  {[
+                    "TS EAMCET shows only Telangana colleges",
+                    "AP EAMCET shows only Andhra Pradesh colleges",
+                    "Rank, category, gender, and branch filters stay the same",
+                  ].map((item) => (
+                    <div
+                      key={item}
+                      className="flex items-start gap-3 rounded-2xl border border-gray-100 bg-gray-50/70 px-4 py-3 text-sm font-medium text-gray-700"
+                    >
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-green-500" />
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -293,6 +333,35 @@ export default function HomePage() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
             <AnimatedStats stats={STATS} />
           </div>
+        </div>
+      </section>
+
+      <section className="border-b border-gray-100 bg-white py-10 sm:py-12">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+          <Reveal className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-600">
+                College Lists
+              </p>
+              <h2 className="font-display mt-2 text-2xl font-extrabold tracking-tight text-gray-950 sm:text-3xl">
+                Download college list PDFs
+              </h2>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2 lg:min-w-[580px]">
+              {COLLEGE_LIST_DOWNLOADS.map((file) => (
+                <a
+                  key={file.href}
+                  href={file.href}
+                  download
+                  className="group inline-flex min-h-14 items-center justify-center gap-2.5 rounded-xl border border-gray-200 bg-white px-5 py-3 text-center text-sm font-bold text-gray-700 shadow-lg shadow-gray-900/[0.04] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
+                >
+                  <Download className="h-4 w-4 shrink-0" />
+                  <span>{file.label}</span>
+                </a>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </section>
 
@@ -646,7 +715,7 @@ export default function HomePage() {
             </p>
             <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
-                href="/rank-finder?mode=web-options"
+                href="/ts-eamcet?mode=web-options"
                 className="group inline-flex items-center gap-3 rounded-2xl bg-white px-8 py-4 text-sm font-bold text-green-700 shadow-2xl shadow-green-900/30 transition-all duration-300 hover:-translate-y-1 hover:bg-green-50 hover:shadow-green-900/40"
               >
                 Download Web Options

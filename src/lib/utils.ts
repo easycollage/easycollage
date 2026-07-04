@@ -51,6 +51,7 @@ export function getCategoryLabel(category: string): string {
     SC_II: "SC-II",
     SC_III: "SC-III",
     ST: "ST",
+    EWS: "EWS",
   };
   return map[category] ?? category;
 }

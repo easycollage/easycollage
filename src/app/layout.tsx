@@ -20,7 +20,7 @@ const bricolage = Bricolage_Grotesque({
 const SITE_URL = "https://www.easycollage.in";
 const SITE_NAME = "EasyCollege";
 const SITE_DESCRIPTION =
-  "Find Telangana engineering colleges by TG EAPCET rank. Check college prediction, web options, cutoffs, category, gender, and branch filters instantly.";
+  "Find TS and AP engineering colleges by EAMCET rank. Check college prediction, web options, cutoffs, category, gender, and branch filters instantly.";
 
 const legacyMetadata: Metadata = {
   title: {
@@ -54,18 +54,20 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   applicationName: SITE_NAME,
   title: {
-    default: "EasyCollege - TG EAPCET College Predictor & Web Options",
+    default: "EasyCollege - TS & AP EAMCET College Predictor",
     template: "%s | EasyCollege",
   },
   description: SITE_DESCRIPTION,
   keywords: [
     "TG EAPCET college predictor",
     "TS EAMCET college predictor",
+    "AP EAMCET college predictor",
     "EAMCET college predictor",
     "TG EAPCET web options",
     "TS EAMCET web options",
     "EAMCET rank predictor",
     "Telangana engineering colleges",
+    "Andhra Pradesh engineering colleges",
     "Telangana college predictor",
     "EAMCET cutoff ranks",
     "TG EAPCET cutoffs",
@@ -93,7 +95,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "EasyCollege - TG EAPCET College Predictor & Web Options",
+    title: "EasyCollege - TS & AP EAMCET College Predictor",
     description: SITE_DESCRIPTION,
     url: SITE_URL,
     type: "website",
@@ -104,13 +106,13 @@ export const metadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "EasyCollege TG EAPCET College Predictor",
+        alt: "EasyCollege TS and AP EAMCET College Predictor",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "EasyCollege - TG EAPCET College Predictor",
+    title: "EasyCollege - TS & AP EAMCET College Predictor",
     description: SITE_DESCRIPTION,
     images: ["/opengraph-image"],
   },
@@ -130,7 +132,7 @@ const websiteJsonLd = {
   },
   potentialAction: {
     "@type": "SearchAction",
-    target: `${SITE_URL}/rank-finder?search={search_term_string}`,
+    target: `${SITE_URL}/ts-eamcet?search={search_term_string}`,
     "query-input": "required name=search_term_string",
   },
 };
@@ -150,7 +152,7 @@ const educationAppJsonLd = {
   },
   areaServed: {
     "@type": "AdministrativeArea",
-    name: "Telangana",
+    name: "Telangana and Andhra Pradesh",
   },
 };
 

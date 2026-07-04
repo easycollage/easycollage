@@ -7,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: ["/", "/rank-finder"],
+        allow: ["/", "/rank-finder", "/ts-eamcet", "/ap-eamcet"],
         disallow: ["/admin", "/admin/login", "/api"],
       },
     ],

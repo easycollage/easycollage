@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma";
 import { verifySession } from "@/lib/session";
 
 interface LeadPayload {
+  exam?: "ts" | "ap";
   name: string;
   phone: string;
   rank: number;
@@ -54,6 +55,7 @@ function validateLead(body: unknown): { valid: boolean; error?: string; data?: L
       name,
       phone: b.phone,
       rank,
+      exam: b.exam === "ts" || b.exam === "ap" ? b.exam : undefined,
       category: typeof b.category === "string" ? b.category : undefined,
       gender: typeof b.gender === "string" ? b.gender : undefined,
       course: typeof b.course === "string" ? b.course : undefined,
@@ -83,6 +85,7 @@ export async function POST(req: NextRequest) {
         name: validation.data.name,
         phone: validation.data.phone,
         rank: validation.data.rank,
+        exam: validation.data.exam,
         category: validation.data.category,
         gender: validation.data.gender,
         course: validation.data.course,

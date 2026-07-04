@@ -7,8 +7,9 @@ import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
-  { label: "College Prediction", href: "/rank-finder" },
-  { label: "Web Options", href: "/rank-finder?mode=web-options" },
+  { label: "TS EAMCET", href: "/ts-eamcet" },
+  { label: "AP EAMCET", href: "/ap-eamcet" },
+  { label: "Web Options", href: "/ts-eamcet?mode=web-options" },
 ] as const;
 
 export function Navbar() {
@@ -57,7 +58,7 @@ export function Navbar() {
         {/* CTA */}
         <div className="hidden md:flex items-center gap-3">
           <Link
-            href="/rank-finder"
+            href="/ts-eamcet"
             className="px-4 py-2 text-sm font-semibold bg-green-600 text-white rounded-lg hover:bg-green-700 active:bg-green-800 transition-colors"
           >
             College Prediction
@@ -88,7 +89,7 @@ export function Navbar() {
             </Link>
           ))}
           <Link
-            href="/rank-finder"
+            href="/ts-eamcet"
             className="mt-2 py-2.5 text-sm font-semibold bg-green-600 text-white rounded-lg text-center hover:bg-green-700 transition-colors"
             onClick={() => setMenuOpen(false)}
           >

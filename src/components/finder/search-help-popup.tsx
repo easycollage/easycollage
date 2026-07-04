@@ -2,18 +2,20 @@
 
 import { CalendarDays, HelpCircle, MessageCircle, Sparkles, X } from "lucide-react";
 import { buildWhatsAppRedirectUrl } from "@/lib/whatsapp";
-
-const WHATSAPP_URL = buildWhatsAppRedirectUrl(
-  "Hi EasyCollege, I have a doubt in finding colleges. Please help me."
-);
+import type { Exam } from "@/types";
 
 interface SearchHelpPopupProps {
+  exam: Exam;
   mode: "eligible" | "web-options";
   onClose: () => void;
 }
 
-export function SearchHelpPopup({ mode, onClose }: SearchHelpPopupProps) {
+export function SearchHelpPopup({ exam, mode, onClose }: SearchHelpPopupProps) {
+  const examLabel = exam === "ap" ? "AP EAMCET" : "TS EAMCET";
   const modeLabel = mode === "web-options" ? "web options" : "college prediction";
+  const whatsappUrl = buildWhatsAppRedirectUrl(
+    `Hi EasyCollege, I need guidance regarding ${examLabel} ${modeLabel}. Please help me.`
+  );
 
   return (
     <div className="fixed bottom-24 right-4 z-[55] w-[calc(100vw-2rem)] max-w-sm animate-fade-up sm:right-6">
@@ -41,13 +43,13 @@ export function SearchHelpPopup({ mode, onClose }: SearchHelpPopupProps) {
                 Need guidance?
               </div>
               <h3 className="font-display text-lg font-bold text-gray-950">
-                Confused with {modeLabel}?
+                Confused with {examLabel} {modeLabel}?
               </h3>
             </div>
           </div>
 
           <p className="text-sm leading-relaxed text-gray-600">
-            If you have any doubt in finding colleges, connect with us. We can help you shortlist better choices before counselling.
+            If you have any doubt in finding colleges for {examLabel}, connect with us. We can help you shortlist better choices before counselling.
           </p>
 
           <div className="mt-5 grid grid-cols-2 gap-2">
@@ -62,7 +64,7 @@ export function SearchHelpPopup({ mode, onClose }: SearchHelpPopupProps) {
               Call.com
             </button>
             <a
-              href={WHATSAPP_URL}
+              href={whatsappUrl}
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center justify-center gap-2 rounded-xl bg-green-600 px-3 py-3 text-xs font-bold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-green-700"
