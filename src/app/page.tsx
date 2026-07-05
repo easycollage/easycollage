@@ -29,6 +29,19 @@ const COUNSELLING_WHATSAPP_URL = buildWhatsAppRedirectUrl(
   "Hi EasyCollege, I am confused about TS EAMCET web options. Please guide me."
 );
 
+const HERO_EXAM_LINKS = [
+  {
+    label: "TS EAMCET",
+    href: "/ts-eamcet",
+    logo: "/assets/telangana-emblem.png",
+  },
+  {
+    label: "AP EAMCET",
+    href: "/ap-eamcet",
+    logo: "/assets/andhra-pradesh-emblem.png",
+  },
+] as const;
+
 const FEATURES = [
   {
     icon: Zap,
@@ -265,20 +278,27 @@ export default function HomePage() {
               </p>
 
               <div className="animate-fade-up delay-300 mb-10 flex flex-col gap-3 sm:flex-row">
-                <Link
-                  href="/ts-eamcet"
-                  className="group inline-flex items-center justify-center gap-2.5 rounded-2xl border border-gray-200 bg-white px-7 py-4 text-sm font-bold text-gray-700 shadow-lg shadow-gray-900/[0.04] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
-                >
-                  TS EAMCET
-                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                </Link>
-                <Link
-                  href="/ap-eamcet"
-                  className="group inline-flex items-center justify-center gap-2.5 rounded-2xl border border-gray-200 bg-white px-7 py-4 text-sm font-bold text-gray-700 shadow-lg shadow-gray-900/[0.04] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
-                >
-                  AP EAMCET
-                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                </Link>
+                {HERO_EXAM_LINKS.map((exam) => (
+                  <Link
+                    key={exam.href}
+                    href={exam.href}
+                    className="group inline-flex min-h-[72px] w-full items-center justify-between gap-4 rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm font-bold text-gray-700 shadow-lg shadow-gray-900/[0.04] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-green-200 hover:bg-white hover:shadow-green-900/[0.08] sm:w-auto sm:min-w-[218px]"
+                  >
+                    <span className="flex min-w-0 items-center gap-3">
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-green-100 bg-green-50/70 p-1 shadow-inner shadow-green-900/[0.04]">
+                        <img
+                          src={exam.logo}
+                          alt=""
+                          aria-hidden="true"
+                          className="h-full w-full object-contain"
+                          decoding="async"
+                        />
+                      </span>
+                      <span className="truncate text-left tracking-wide">{exam.label}</span>
+                    </span>
+                    <ArrowRight className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Link>
+                ))}
               </div>
 
               <div className="animate-fade-up delay-400 flex flex-wrap gap-5">
