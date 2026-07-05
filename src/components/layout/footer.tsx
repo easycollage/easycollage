@@ -15,11 +15,11 @@ export function Footer() {
               <span className="font-display font-bold text-gray-900">EasyCollege</span>
             </div>
             <p className="text-sm text-gray-500 leading-relaxed max-w-xs">
-              Helping Telangana students make informed decisions about their engineering future.
+              Helping TS and AP students make informed decisions about their engineering future.
             </p>
             <div className="flex items-center gap-1.5 mt-4 text-sm text-gray-500">
               <MapPin className="w-3.5 h-3.5 text-green-600" />
-              <span>Telangana, India</span>
+              <span>Telangana & Andhra Pradesh, India</span>
             </div>
             <a
               href="mailto:support@easycollage.in"
@@ -36,8 +36,9 @@ export function Footer() {
             <ul className="space-y-2.5">
               {([
                 { label: "Home", href: "/" },
-                { label: "College Prediction", href: "/rank-finder" },
-                { label: "Web Options", href: "/rank-finder?mode=web-options" },
+                { label: "TS EAMCET", href: "/ts-eamcet" },
+                { label: "AP EAMCET", href: "/ap-eamcet" },
+                { label: "Web Options", href: "/ts-eamcet?mode=web-options" },
               ] as const).map((link) => (
                 <li key={link.href}>
                   <Link
@@ -55,21 +56,21 @@ export function Footer() {
           <div>
             <h4 className="text-sm font-semibold text-gray-900 mb-4">About</h4>
             <p className="text-sm text-gray-500 leading-relaxed">
-              EasyCollege is a student tool for exploring TS EAMCET cutoffs and web options. 
-              Data is indicative — always verify with the official TSCHE website before making decisions.
+              EasyCollege is a student tool for exploring EAMCET cutoffs and web options.
+              Data is indicative; always verify with the official counselling website before making decisions.
             </p>
             <div className="mt-5 flex flex-col gap-2 sm:flex-row md:flex-col lg:flex-row">
               <Link
-                href="/rank-finder"
-                className="inline-flex items-center justify-center rounded-lg bg-green-600 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-green-700"
+                href="/ts-eamcet"
+                className="inline-flex items-center justify-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-xs font-semibold text-gray-700 transition-colors hover:bg-white"
               >
-                College Prediction
+                TS EAMCET
               </Link>
               <Link
-                href="/rank-finder?mode=web-options"
-                className="inline-flex items-center justify-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-xs font-semibold text-gray-700 transition-colors hover:bg-gray-50"
+                href="/ap-eamcet"
+                className="inline-flex items-center justify-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-xs font-semibold text-gray-700 transition-colors hover:bg-white"
               >
-                Web Options
+                AP EAMCET
               </Link>
             </div>
           </div>
@@ -88,7 +89,7 @@ export function Footer() {
             </a>
             .
           </p>
-          <p className="text-xs text-gray-400">Data is for guidance only. Verify with TSCHE.</p>
+          <p className="text-xs text-gray-400">Data is for guidance only. Verify with official counselling portals.</p>
         </div>
       </div>
     </footer>

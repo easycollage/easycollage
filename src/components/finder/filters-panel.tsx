@@ -20,8 +20,10 @@ export function FiltersPanel({ filters, onUpdate, onReset, total, isLoading }: F
   const [branchDropdownOpen, setBranchDropdownOpen] = useState(false);
   const selectedBranches = filters.branches ? filters.branches.split(",").filter(Boolean) : [];
   const hasActiveFilters = Object.entries(filters).some(
-    ([key, value]) => key !== "mode" && value !== ""
+    ([key, value]) => key !== "mode" && key !== "exam" && value !== ""
   );
+  const examLabel =
+    filters.exam === "ap" ? "AP EAMCET" : filters.exam === "ts" ? "TS EAMCET" : "EAMCET";
 
   function toggleWebOptionBranch(value: string) {
     const next = selectedBranches.includes(value)
@@ -54,6 +56,11 @@ export function FiltersPanel({ filters, onUpdate, onReset, total, isLoading }: F
             Clear all
           </button>
         )}
+      </div>
+
+      <div className="rounded-lg border border-green-100 bg-green-50 px-3 py-2">
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-green-700">Exam</p>
+        <p className="mt-0.5 text-sm font-bold text-gray-900">{examLabel}</p>
       </div>
 
       <div>

@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { filterColleges, validateRank } from "@/lib/filter";
-import type { CollegesApiResponse, ApiError } from "@/types";
+import type { CollegesApiResponse, ApiError, CollegeFilters, Exam } from "@/types";
 
 export async function GET(req: NextRequest): Promise<NextResponse<CollegesApiResponse | ApiError>> {
   const { searchParams } = req.nextUrl;
 
+  const examParam = searchParams.get("exam");
+  const exam: Exam | undefined = examParam === "ts" || examParam === "ap" ? examParam : undefined;
   const rankStr = searchParams.get("rank");
   const category = searchParams.get("category") ?? "";
   const gender = searchParams.get("gender") ?? "";
@@ -29,7 +31,8 @@ export async function GET(req: NextRequest): Promise<NextResponse<CollegesApiRes
   const maxPageSize = mode === "web-options" ? 500 : 50;
   const pageSize = Math.min(maxPageSize, Math.max(1, parseInt(pageSizeStr, 10) || 12));
 
-  const filters = {
+  const filters: CollegeFilters = {
+    exam,
     rank: rankValidation.rank,
     category: category || undefined,
     gender: gender || undefined,

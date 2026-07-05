@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import type { Route } from "next";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import type { College, CollegesApiResponse } from "@/types";
+import type { College, CollegesApiResponse, Exam } from "@/types";
 
 interface UseCollegefinderReturn {
   colleges: College[];
@@ -20,6 +20,7 @@ interface UseCollegefinderReturn {
 }
 
 export interface FilterState {
+  exam: Exam | "";
   mode: "eligible" | "web-options";
   rank: string;
   category: string;
@@ -29,18 +30,26 @@ export interface FilterState {
   search: string;
 }
 
-const DEFAULT_FILTERS: FilterState = {
-  mode: "eligible",
-  rank: "",
-  category: "",
-  gender: "",
-  branch: "",
-  branches: "",
-  search: "",
-};
+function getDefaultFilters(exam?: Exam): FilterState {
+  return {
+    exam: exam ?? "",
+    mode: "eligible",
+    rank: "",
+    category: "",
+    gender: "",
+    branch: "",
+    branches: "",
+    search: "",
+  };
+}
+
+function parseExam(value: string | null): Exam | undefined {
+  return value === "ts" || value === "ap" ? value : undefined;
+}
 
 function buildQueryString(filters: FilterState, page: number): string {
   const params = new URLSearchParams();
+  if (filters.exam) params.set("exam", filters.exam);
   if (filters.mode !== "eligible") params.set("mode", filters.mode);
   if (filters.rank) params.set("rank", filters.rank);
   if (filters.category) params.set("category", filters.category);
@@ -52,13 +61,18 @@ function buildQueryString(filters: FilterState, page: number): string {
   return params.toString();
 }
 
-export function useCollegeFinder(): UseCollegefinderReturn {
+export function useCollegeFinder({
+  exam: routeExam,
+  enabled = true,
+}: { exam?: Exam; enabled?: boolean } = {}): UseCollegefinderReturn {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const initialExam = routeExam ?? parseExam(searchParams.get("exam"));
 
   // Init from URL params
   const [filters, setFilters] = useState<FilterState>({
+    exam: initialExam ?? "",
     mode: searchParams.get("mode") === "web-options" ? "web-options" : "eligible",
     rank: searchParams.get("rank") ?? "",
     category: searchParams.get("category") ?? "",
@@ -106,6 +120,8 @@ export function useCollegeFinder(): UseCollegefinderReturn {
 
   // Debounce fetch on filter changes
   useEffect(() => {
+    if (!enabled) return;
+
     if (debounceTimer.current) clearTimeout(debounceTimer.current);
 
     debounceTimer.current = setTimeout(() => {
@@ -119,7 +135,7 @@ export function useCollegeFinder(): UseCollegefinderReturn {
     return () => {
       if (debounceTimer.current) clearTimeout(debounceTimer.current);
     };
-  }, [filters, page, fetchColleges, router, pathname]);
+  }, [enabled, filters, page, fetchColleges, router, pathname]);
 
   const updateFilter = useCallback((key: keyof FilterState, value: string) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -131,9 +147,9 @@ export function useCollegeFinder(): UseCollegefinderReturn {
   }, []);
 
   const reset = useCallback(() => {
-    setFilters(DEFAULT_FILTERS);
+    setFilters(getDefaultFilters(initialExam));
     setPageState(1);
-  }, []);
+  }, [initialExam]);
 
   return {
     colleges,

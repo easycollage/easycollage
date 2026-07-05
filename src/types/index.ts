@@ -1,10 +1,12 @@
 export type Category = string;
+export type Exam = "ts" | "ap";
 export type Gender = string;
 export type Region = string;
 export type ViewMode = "table" | "card";
 
 export interface College {
   id: string;
+  exam?: Exam;
   phase?: string;
   collegeName: string;
   collegeCode: string;
@@ -25,6 +27,7 @@ export interface College {
 }
 
 export interface CollegeFilters {
+  exam?: Exam;
   rank?: number;
   category?: Category;
   gender?: Gender;

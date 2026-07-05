@@ -4,6 +4,7 @@
 
 @layer base {
   :root {
+    color-scheme: only light;
     --background: 0 0% 100%;
     --foreground: 222 47% 11%;
     --card: 0 0% 100%;
@@ -28,11 +29,13 @@
 
   body {
     @apply bg-background text-foreground;
+    color-scheme: only light;
     font-feature-settings: "cv11", "ss01";
     font-variation-settings: "opsz" auto;
   }
 
   html {
+    color-scheme: only light;
     scroll-behavior: smooth;
   }
 

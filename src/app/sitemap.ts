@@ -13,7 +13,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: `${SITE_URL}/rank-finder`,
+      url: `${SITE_URL}/ts-eamcet`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.95,
+    },
+    {
+      url: `${SITE_URL}/ap-eamcet`,
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.95,

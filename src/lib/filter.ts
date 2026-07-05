@@ -1,6 +1,34 @@
 import type { College, CollegeFilters } from "@/types";
 import { getCutoffRankEnd, getCutoffRankStart } from "@/lib/utils";
+import { AP_EAMCET_MOCK_COLLEGES } from "./ApEmcetMockdata";
 import { MOCK_COLLEGES } from "./mockdata";
+
+const ALL_COLLEGES = [...MOCK_COLLEGES, ...AP_EAMCET_MOCK_COLLEGES];
+
+const AP_AFFILIATION_HINTS = [
+  "ANDHRA",
+  "JNTUA",
+  "JNTUK",
+  "SRI VENKATESWARA",
+  "SVU",
+];
+
+const AP_DISTRICT_CODES = [
+  "ATP",
+  "CTR",
+  "EG",
+  "ELR",
+  "GNT",
+  "KRI",
+  "KNL",
+  "NLR",
+  "PKS",
+  "SKL",
+  "VSP",
+  "VZM",
+  "WG",
+  "YSR",
+];
 
 function matchesCategory(collegeCategory: string, selectedCategory: string): boolean {
   if (selectedCategory === "SC") {
@@ -10,11 +38,34 @@ function matchesCategory(collegeCategory: string, selectedCategory: string): boo
   return collegeCategory === selectedCategory;
 }
 
+function getCollegeExam(college: College): "ts" | "ap" {
+  if (college.exam) return college.exam;
+
+  const affiliation = college.affiliatedTo?.toUpperCase() ?? "";
+  const region = college.region?.toUpperCase() ?? "";
+  const districtCode = college.distCode?.toUpperCase() ?? "";
+
+  if (AP_AFFILIATION_HINTS.some((hint) => affiliation.includes(hint))) {
+    return "ap";
+  }
+
+  if (region === "AU" || region === "SVU") {
+    return "ap";
+  }
+
+  if (AP_DISTRICT_CODES.includes(districtCode)) {
+    return "ap";
+  }
+
+  return "ts";
+}
+
 export function filterColleges(filters: CollegeFilters): {
   data: College[];
   total: number;
 } {
   const {
+    exam,
     rank,
     category,
     gender,
@@ -26,7 +77,11 @@ export function filterColleges(filters: CollegeFilters): {
     pageSize = 12,
   } = filters;
 
-  let results = [...MOCK_COLLEGES];
+  let results = [...ALL_COLLEGES];
+
+  if (exam) {
+    results = results.filter((college) => getCollegeExam(college) === exam);
+  }
 
   // Rank filter — core logic
   if (rank !== undefined && rank !== null) {

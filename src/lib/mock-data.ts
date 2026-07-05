@@ -333154,12 +333154,29 @@ export const BRANCHES = [
   "Information Technology",
   "Civil Engineering",
   "Electrical and Electronics Engineering",
+  "Artificial Intelligence",
   "Artificial Intelligence and Machine Learning",
+  "Artificial Intelligence and Data Science",
   "Data Science",
+  "Cyber Security",
+  "Computer Science and Business Systems",
+  "Internet of Things",
   "Chemical Engineering",
   "Biotechnology",
+  "Agricultural Engineering",
+  "Aerospace Engineering",
+  "Automobile Engineering",
+  "Electronics and Instrumentation Engineering",
+  "Food Technology",
+  "Mining Engineering",
+  "Metallurgical Engineering",
+  "Naval Architecture and Marine Engineering",
+  "Petroleum Engineering",
+  "Pharmacy",
+  "Pharm-D",
+  "Robotics",
 ];
 
-export const CATEGORIES = ["OC", "BC_A", "BC_B", "BC_C", "BC_D", "BC_E", "SC", "ST"] as const;
+export const CATEGORIES = ["OC", "BC_A", "BC_B", "BC_C", "BC_D", "BC_E", "SC", "ST", "EWS"] as const;
 export const GENDERS = ["Male", "Female", "Both"] as const;
 export const REGIONS = ["AU", "OU", "SVU", "Open"] as const;

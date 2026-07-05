@@ -11,8 +11,10 @@ import {
   User,
 } from "lucide-react";
 import { BRANCHES, CATEGORIES, GENDERS } from "@/lib/mock-data";
+import type { Exam } from "@/types";
 
 export interface LeadFormData {
+  exam?: Exam;
   name: string;
   phone: string;
   rank: string;
@@ -25,6 +27,8 @@ interface LeadFormProps {
   onSuccess: (data: LeadFormData) => void;
   autoFocus?: boolean;
   compact?: boolean;
+  exam?: Exam;
+  examLabel?: string;
 }
 
 const INPUT_CLS =
@@ -32,7 +36,13 @@ const INPUT_CLS =
 const NAME_PATTERN = /^[A-Za-z]+(?:\s+[A-Za-z]+)*$/;
 const MAX_NAME_LENGTH = 70;
 
-export function LeadForm({ onSuccess, autoFocus = false, compact = false }: LeadFormProps) {
+export function LeadForm({
+  onSuccess,
+  autoFocus = false,
+  compact = false,
+  exam,
+  examLabel = "EAMCET",
+}: LeadFormProps) {
   const [form, setForm] = useState<LeadFormData>({
     name: "",
     phone: "",
@@ -93,6 +103,7 @@ export function LeadForm({ onSuccess, autoFocus = false, compact = false }: Lead
           category: form.category,
           gender: form.gender,
           course: form.course,
+          exam,
         }),
       });
 
@@ -101,7 +112,7 @@ export function LeadForm({ onSuccess, autoFocus = false, compact = false }: Lead
         throw new Error(data.error ?? "Failed to submit");
       }
 
-      onSuccess(form);
+      onSuccess({ ...form, exam });
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : "Something went wrong. Try again.");
     } finally {
@@ -173,7 +184,7 @@ export function LeadForm({ onSuccess, autoFocus = false, compact = false }: Lead
 
         <div>
           <label className="block text-xs font-semibold text-gray-700 mb-1.5">
-            EAMCET Rank <span className="text-red-500">*</span>
+            {examLabel} Rank <span className="text-red-500">*</span>
           </label>
           <div className="relative">
             <Hash className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />

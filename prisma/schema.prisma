@@ -23,6 +23,7 @@ model Lead {
   name      String
   phone     String
   rank      Int
+  exam      String?
   category  String?
   gender    String?
   course    String?

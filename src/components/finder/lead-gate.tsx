@@ -1,21 +1,26 @@
 "use client";
 
 import { LeadForm, type LeadFormData } from "@/components/finder/lead-form";
+import type { Exam } from "@/types";
 
 interface LeadGateProps {
   onUnlock: (data: LeadFormData) => void;
+  exam: Exam;
+  examLabel: string;
 }
 
-export function LeadGate({ onUnlock }: LeadGateProps) {
+export function LeadGate({ onUnlock, exam, examLabel }: LeadGateProps) {
   return (
-    <div className="fixed inset-0 z-50 bg-gradient-to-br from-green-50 via-white to-emerald-50/60 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <div className="max-h-[calc(100vh-2rem)] overflow-y-auto">
-          <LeadForm onSuccess={onUnlock} autoFocus />
-        </div>
-
-       
+    <section className="py-8 sm:py-10">
+      <div className="mx-auto w-full max-w-md">
+        <LeadForm
+          onSuccess={onUnlock}
+          autoFocus
+          compact
+          exam={exam}
+          examLabel={examLabel}
+        />
       </div>
-    </div>
+    </section>
   );
 }
